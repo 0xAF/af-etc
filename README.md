@@ -7,3 +7,11 @@ Install this with the install.sh script.
 The script can install system-wide or user-specific stuff
 depending on how it's called.
 
+
+LICENSE
+=======
+
+WTFPL
+
+This means Public Domain
+

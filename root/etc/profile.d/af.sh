@@ -252,7 +252,7 @@ log() {
 	# what to use for tail
 	tail="tail -F -n 150"
 	#tail="grc -c conf.metalog tail -F -n 150"
-	exists grc && tail="grc -c conf.log tail -F -n 150"
+	type -P grc >/dev/null 2>&1 && tail="grc -c conf.log tail -F -n 150"
 
 	#[[ -z $wanted ]] && wanted="everything"
 	[[ -z $wanted ]] && wanted="messages"
