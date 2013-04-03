@@ -130,6 +130,7 @@ if has("autocmd")
 autocmd BufRead *.txt set tw=78
 
 au FileType html,xhtml,tt2html setlocal tabstop=2 shiftwidth=2 softtabstop=2 sidescroll=2
+au FileType perl,js,jquery setlocal tabstop=4 shiftwidth=4 softtabstop=4 sidescroll=4 noet
 "autocmd FileType perl set fp=perltidy\ -w\ -b\ -ole=unix\ -csc\ -ce\ -et=4
 "autocmd FileType perl map <C-i> :%!perltidy -w -b -ole=unix -csc -ce -et=4<CR>
 " autocmd FileType c,cpp map <C-i> :%!indent -kr -l78 -lc78 -bap -bbb -nbbo -br -brs -bs -cdb -cs -nbfda -ut -i8 -pcs -npsl -saf -sai -saw -ss -ts8 -nfca -npcs -nprs -ppi2 <CR>
@@ -516,6 +517,22 @@ function AF_HelpBuffer()
 	let s:txt = s:txt . ",x  - disable syntax for ifdef DEBUG.*\n"
 	let s:txt = s:txt . "\n"
 	let s:txt = s:txt . "\n"
+	let s:txt = s:txt . "    Foldings:\n"
+	let s:txt = s:txt . "\n"
+	let s:txt = s:txt . "zf#j creates a fold from the cursor down # lines.\n"
+	let s:txt = s:txt . "zf/string creates a fold from the cursor to string .\n"
+	let s:txt = s:txt . "zj moves the cursor to the next fold.\n"
+	let s:txt = s:txt . "zk moves the cursor to the previous fold.\n"
+	let s:txt = s:txt . "zo opens a fold at the cursor.\n"
+	let s:txt = s:txt . "zO opens all folds at the cursor.\n"
+	let s:txt = s:txt . "zm increases the foldlevel by one.\n"
+	let s:txt = s:txt . "zM closes all open folds. <-- I still keep forgeting this ...\n"
+	let s:txt = s:txt . "zr decreases the foldlevel by one.\n"
+	let s:txt = s:txt . "zR decreases the foldlevel to zero -- all folds will be open.\n"
+	let s:txt = s:txt . "zd deletes the fold at the cursor.\n"
+	let s:txt = s:txt . "zE deletes all folds.\n"
+	let s:txt = s:txt . "[z move to start of open fold.\n"
+	let s:txt = s:txt . "]z move to end of open fold.\n"
 
 	setlocal modifiable
 	put! = s:txt
@@ -573,10 +590,15 @@ function! CheckForCustomConfiguration()
 	endif
 endfunction
 
+" S-Insert and C-S-Insert to paste in insert mode
+imap <S-Insert>  <ESC>"+gPa
+imap <C-S-Insert>  <ESC>"+gPa
 
 " enable indent guides
 if has("gui_running")
 	let g:indent_guides_enable_on_vim_startup = 1
 endif
 map <F3> \ig
+
+call pathogen#infect()
 
