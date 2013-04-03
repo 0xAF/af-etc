@@ -1,1 +1,2 @@
 set ssl:verify-certificate 0
+alias vi edit
