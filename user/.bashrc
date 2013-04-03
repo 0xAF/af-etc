@@ -47,7 +47,7 @@ alias ssho='ssh -i ~/.ssh/id_dsa.octagon root@192.168.10.1'
 alias sl='export MALLOC_CHECK_=0;./secondlife'
 alias wineold='WINEPREFIX=~/.wine.old wine'
 alias ie7='WINEPREFIX=~/.wine.ie7 wine "C:\Program Files\Internet Explorer\iexplore"'
-alias ie8='WINEPREFIX=~/.wine.ie8 wine "C:\Program Files\Internet Explorer\iexplore"'
+alias ie8='WINEARCH=win32 WINEPREFIX=~/.wine.ie8 wine "C:\Program Files\Internet Explorer\iexplore"'
 alias ie9='WINEPREFIX=~/.wine.ie9 wine "C:\Program Files\Internet Explorer\iexplore"'
 alias cs5='WINEPREFIX=~/.wine.cs5 wine "/home/af/.wine.cs5/drive_c/Program Files/Adobe/Adobe Photoshop CS5/Photoshop.exe"'
 alias pmp='WINEPREFIX=~/.wine.cs5 wine "/home/af/.wine.cs5/drive_c/Program Files/PhotomatixPro4/PhotomatixPro.exe"'
@@ -57,7 +57,9 @@ alias winegame64='WINEPREFIX=~/.winegame \wine64'
 alias erp='GTK2_RC_FILES= openerp-client'
 alias freemind='XMODIFIERS= \freemind'
 alias sqldeveloper='XMODIFIERS= \sqldeveloper'
+alias youtube2mp3="youtube-dl -x --audio-format mp3 -c --restrict-filenames -o '%(title)s.%(ext)s'"
 #alias ssh='ssh -e\|'
+alias emacs=e
 
 ida() {
 	if [[ -z $1 ]]; then
@@ -70,7 +72,7 @@ ida() {
 #export PATH=$PATH:~/local/bin:~/local/sbin:/sbin:/usr/sbin:/home/af/arm-toolchain462/bin/
 #export PATH=$PATH:~/local/bin:~/local/sbin:/sbin:/usr/sbin:/home/af/devel/400d/gentoo32/arm-toolchain462/bin
 #export PATH=$PATH:~/local/bin:~/local/sbin:/sbin:/usr/sbin:/home/af/arm/arm-toolchain462/bin
-export PATH=$PATH:~/local/bin:~/local/sbin:/sbin:/usr/sbin
+export PATH=$PATH:~/.local/bin:~/.local/sbin:/sbin:/usr/sbin
 
 export PERL_LOCAL_LIB_ROOT="/home/af/perl5";
 export PERL_MB_OPT="--install_base /home/af/perl5";
