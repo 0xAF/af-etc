@@ -2,6 +2,7 @@
 # 0xAF: this script is alternative to sendxmpp, which was not working for me
 # Requirements: Net::Jabber and all it's requirements (obviously)
 # License: WTFPL
+# NOTE: wont work for GMail probably.
 
 use strict;
 use Net::Jabber qw/Client/;
@@ -20,6 +21,14 @@ my $subject  = undef; #'Automated message'; # send message if set or send chat i
 ########################
 
 my $debuglevel = 0; # 0|1|2
+
+die qq{usage: $0 [jid_1] [jid_2] [...]
+examples:
+	$0 af\@jabber.com
+	[message will be read from STDIN, terminated with CTRL-D or a dot on an empty line]
+or
+	echo 'this is my message sent to "af" and "twister"' | $0 af\@itc.bg twister\@itc.bg
+} unless ($#ARGV >= 0);
 
 $port = ($enc == 2 ? 5223 : 5222) unless ($port);
 
