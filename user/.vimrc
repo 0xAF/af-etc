@@ -19,7 +19,8 @@ set history=50		" keep 50 lines of command line history
 set ruler		" show the cursor position all the time
 
 set noerrorbells
-set visualbell
+"set visualbell
+set novisualbell
 
 " allow vim to read lines like '# vim: ts=4 sw=4'
 set modeline
@@ -27,8 +28,14 @@ set modeline
 set nobackup
 set nowritebackup
 
+" set line wrapping at word
+set lbr
+
 " some plugins may fail with this, see the autocmd's for better way
 "set autochdir
+
+" write swap files to this dir
+set dir=~/.vim/tmp
 
 autocmd BufRead *.txt set tw=78
 " When editing a file, always jump to the last known cursor position.
@@ -89,8 +96,6 @@ endif
 
 "ab (C) Copyright (c) 2004 Stanislav Lechev [AngelFire]. All rights reserved.
 set tags=tags
-
-set fileformat=unix
 
 "set makeprg=/usr/local/bin/vimmake\ %<\ %
 
@@ -310,6 +315,11 @@ autocmd BufWinEnter * match ExtraWhitespace /^\s* \s*\|\s\+$/
 " if it is gui {{{
 if has("gui_running")
 	colorscheme af
+
+	let g:indent_guides_auto_colors = 0
+	autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=#0c0f0f ctermbg=3
+	autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#1c1f1f ctermbg=4
+
 	"colorscheme blue
 	"set gfn=Terminus\ 14
 	set guifont=Droid\ Sans\ Mono\ for\ Powerline\ 13
@@ -601,4 +611,7 @@ endif
 map <F3> \ig
 
 call pathogen#infect()
+
+" only checked if you explicitly run :SyntasticCheck
+let syntastic_mode_map = { 'passive_filetypes': ['html'] }
 

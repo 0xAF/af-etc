@@ -185,6 +185,7 @@ exists lesspipe		&& export LESSOPEN="|lesspipe %s"
 exists pygmentize	&& export LESSCOLORIZER=pygmentize
 exists vim		&& export EDITOR=$(type -P vim)
 exists less		&& export PAGER=$(type -P less)
+[ -x /bin/vimpager ]	&& export PAGER=/bin/vimpager && alias less=$PAGER
 
 # vim man pager will ignore these less colors, but it uses it's own
 #export MANPAGER=vimmanpager
