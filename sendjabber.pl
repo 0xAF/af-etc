@@ -61,7 +61,7 @@ foreach (@ARGV) {
 		body     => $body,
 		priority => 10,
 		type     => ( defined($subject) ? undef : 'chat' ),
-		subject  => ( defined($subject) ? "Automated message" : undef),
+		subject  => ( defined($subject) ? $subject : undef),
 	);
 }
 
