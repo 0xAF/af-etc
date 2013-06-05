@@ -317,7 +317,7 @@ if has("gui_running")
 	colorscheme af
 
 	let g:indent_guides_auto_colors = 0
-	autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=#0c0f0f ctermbg=3
+	autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=#292c2c ctermbg=3
 	autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#1c1f1f ctermbg=4
 
 	"colorscheme blue
@@ -602,7 +602,7 @@ endfunction
 
 " S-Insert and C-S-Insert to paste in insert mode
 imap <S-Insert>  <ESC>"+gPa
-imap <C-S-Insert>  <ESC>"+gPa
+imap <C-S-Insert>  <ESC>"+gpi
 
 " enable indent guides
 if has("gui_running")
@@ -614,4 +614,5 @@ call pathogen#infect()
 
 " only checked if you explicitly run :SyntasticCheck
 let syntastic_mode_map = { 'passive_filetypes': ['html'] }
+
 
