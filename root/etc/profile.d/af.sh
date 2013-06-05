@@ -185,7 +185,7 @@ exists lesspipe		&& export LESSOPEN="|lesspipe %s"
 exists pygmentize	&& export LESSCOLORIZER=pygmentize
 exists vim		&& export EDITOR=$(type -P vim)
 exists less		&& export PAGER=$(type -P less)
-[ -x /bin/vimpager ]	&& export PAGER=/bin/vimpager && alias less=$PAGER
+#[ -x /bin/vimpager ]	&& export PAGER=/bin/vimpager && alias less=$PAGER
 
 # vim man pager will ignore these less colors, but it uses it's own
 #export MANPAGER=vimmanpager
@@ -218,6 +218,7 @@ unalias ls 2>/dev/null
 alias ls="$(type -P ls) --color=auto --group-directories-first -p"
 alias grep="$(type -P grep) --color=auto"
 alias rot13='perl -pe "y/A-Za-z/N-ZA-Mn-za-m/;"'
+alias ff='find . -iname'
 #}}}
 
 # For vim in Arch: http://bbs.archlinux.org/viewtopic.php?id=36221
