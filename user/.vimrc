@@ -134,7 +134,8 @@ if has("autocmd")
 " In text files, always limit the width of text to 78 characters
 autocmd BufRead *.txt set tw=78
 
-au FileType html,xhtml,tt2html setlocal tabstop=2 shiftwidth=2 softtabstop=2 sidescroll=2
+au FileType html,xhtml,tt2html,html.epl setlocal tabstop=2 shiftwidth=2 softtabstop=2 sidescroll=2
+au FileType epl imap <C-Space> <%=  =%><ESC>hhhha
 au FileType perl,js,jquery setlocal tabstop=4 shiftwidth=4 softtabstop=4 sidescroll=4 noet
 "autocmd FileType perl set fp=perltidy\ -w\ -b\ -ole=unix\ -csc\ -ce\ -et=4
 "autocmd FileType perl map <C-i> :%!perltidy -w -b -ole=unix -csc -ce -et=4<CR>
@@ -225,7 +226,7 @@ nnoremap  \  <C-^>
 " for word compleation
 "imap <C-Space> <C-n>
 "imap <C-BS> <C-p>
-imap <C-Space> <C-x><C-o>
+"imap <C-Space> <C-x><C-o>
 
 "http://vim.wikia.com/wiki/Make_Vim_completion_popup_menu_work_just_like_in_an_IDE
 set completeopt=longest,menuone
@@ -615,4 +616,8 @@ call pathogen#infect()
 " only checked if you explicitly run :SyntasticCheck
 let syntastic_mode_map = { 'passive_filetypes': ['html'] }
 
+let mojo_highlight_data = 1
+
+" \l in visual - convert *selected* to <%=l '*selected*'%>, for use with mojo's ep
+vmap \l :s/\%V\(.*\)\%V/<%=l '\1'%>/<CR>:let @/ = ""<CR>``
 

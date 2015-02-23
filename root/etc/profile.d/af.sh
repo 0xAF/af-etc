@@ -210,7 +210,7 @@ exists mtr		&& alias mtr="$(type -P mtr) --curses"
 exists mplayer		&& alias mplayer='LANG=bg_BG.UTF-8 LC_ALL=bg_BG.UTF-8 LANGUAGE=bg_BG.UTF-8 mplayer -subcp cp1251'
 exists equo		&& alias eq=$(type -P equo)
 exists wget		&& alias wget="$(type -P wget) --trust-server-names --content-disposition"
-exists curl		&& alias pastebin="$(type -P curl) -F \"sprunge=<-\" http://sprunge.us"
+exists curl		&& alias pastesprunge="$(type -P curl) -F \"sprunge=<-\" http://sprunge.us"
 exists xargs		&& alias map="$(type -P xargs) -n1"
 exists vim 		&& alias vi=$(type -P vim)
 alias path='echo -e ${PATH//:/\\n}'
@@ -219,6 +219,8 @@ alias ls="$(type -P ls) --color=auto --group-directories-first -p"
 alias grep="$(type -P grep) --color=auto"
 alias rot13='perl -pe "y/A-Za-z/N-ZA-Mn-za-m/;"'
 alias ff='find . -iname'
+alias telnetssl='openssl s_client -crlf -connect'
+alias psc='ps xawf -eo pid,user,cgroup,args'
 #}}}
 
 # For vim in Arch: http://bbs.archlinux.org/viewtopic.php?id=36221
