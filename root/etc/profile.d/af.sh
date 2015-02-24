@@ -4,6 +4,7 @@
 [ -z "$BASH_VERSION" -o -z "$PS1" -o -z "$BASH" ] && return # debian scripts fail to execute [[ ... ]] checks, so leave here
 if [[ $- != *i* ]] ; then return; fi # shell is non-interactive... leave here
 
+#SERVER=1 # set this if the script is installed on a server (will modify PS1)
 
 # check for program existence (only if it's a file)
 function exists() { type -P $1 >/dev/null 2>&1; }
@@ -100,7 +101,11 @@ function set_ps1() { #{{{
 	#local _cmd_not_ok="${BRed}\342\223\247 ${DefCol}"
 	local _cmd_ok="${BWhite}*${DefCol}"
 	local _cmd_not_ok="${BRed}x${DefCol}"
-	local _finish_line="\342\225\274"
+	if [[ -n ${SERVER} ]]; then
+		_cmd_ok="${BWhite} !!! ${BYellow}CAUTION${BWhite} - VPS - ${BYellow}CAUTION${BWhite} !!! ${DefCol}"
+		_cmd_not_ok="${BRed} !!! ${BYellow}CAUTION${BRed} - VPS - ${BYellow}CAUTION${BRed} !!! ${DefCol}"
+	fi
+	_finish_line="\342\225\274"
 	#local _line1_1="\342\224\214"
 	local _line1_1="\342\225\276"
 	local _line="\342\224\200"
