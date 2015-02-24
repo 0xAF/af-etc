@@ -1,10 +1,9 @@
 # 0xAF: this is my system-wide bashrc
 
-if [[ -z "$BASH" ]]; then echo "bash needed, skipping af.sh"; return; fi
+# non-interactive shell checks
+[ -z "$BASH_VERSION" -o -z "$PS1" -o -z "$BASH" ] && return # debian scripts fail to execute [[ ... ]] checks, so leave here
+if [[ $- != *i* ]] ; then return; fi # shell is non-interactive... leave here
 
-if [[ $- != *i* ]] ; then
-	return # shell is non-interactive... leave here
-fi
 
 # check for program existence (only if it's a file)
 function exists() { type -P $1 >/dev/null 2>&1; }
