@@ -1,6 +1,9 @@
 #!/bin/bash
 # 0xAF: this is install script for my /etc essential files, I use this on newly installed systems.
 
+# set $ID to >0, and you will be able to install user-specific stuff for root
+ID=$EUID
+
 trap "unset -f exists; unset -f die" EXIT
 
 function exists() { type -P $1 >/dev/null 2>&1; }
@@ -24,7 +27,7 @@ cd "$(dirname $0)"
 [[ "$1" = "-f" ]] && overwrite=" (force-overwrite)"
 
 echo -n "installing "
-(( $EUID )) && echo -n "user specific" || echo -n "system-wide"
+(( $ID )) && echo -n "user specific" || echo -n "system-wide"
 echo " stuff${overwrite}..."
 echo
 
@@ -32,7 +35,7 @@ echo "hit [enter] to run / ctrl-c to exit"
 read
 
 DEST_DIR=""; # system-wide
-(( $EUID )) && DEST_DIR="$(cd;pwd)"
+(( $ID )) && DEST_DIR="$(cd;pwd)"
 
 
 function install() {
@@ -81,7 +84,7 @@ function install() {
 look="root"
 usr="root"
 grp="root"
-(( $EUID )) && look="user" && usr=$(id -u) && grp=$(id -g)
+(( $ID )) && look="user" && usr=$(id -u) && grp=$(id -g)
 
 files=( $( find $look -mindepth 1 -type f | grep -v "\.git\/" ) )
 
