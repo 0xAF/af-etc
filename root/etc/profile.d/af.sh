@@ -4,7 +4,26 @@
 [ -z "$BASH_VERSION" -o -z "$PS1" -o -z "$BASH" ] && return # debian scripts fail to execute [[ ... ]] checks, so leave here
 if [[ $- != *i* ]] ; then return; fi # shell is non-interactive... leave here
 
-#SERVER=1 # set this if the script is installed on a server (will modify PS1)
+#SERVER="MyServer" # set this if the script is installed on a server (will modify PS1)
+#SIMPLE_PROMPT=1 # set this if you dont like the unicode prompt
+MAN_COLOR_SET=2 # colorful man pages; 0==disable, 1==color_set_1; *==default_debian_color_set
+
+# yes, I intentionally force the TERM to linux, I like it this way, even in my X terminals
+export TERM=linux
+
+# we add sbin to path temporarily
+export PATH=$PATH:/sbin:/usr/sbin:/usr/local/bin:/usr/local/sbin
+
+# When changing directory small typos can be ignored by Bash
+# cd /vr/lgo/apaache
+# will result in: /var/log/apache
+#shopt -s cdspell
+
+# When you type directory name, it will auto CD into it
+shopt -s autocd
+
+# you need to hit Ctrl-D two times to exit the shell
+#export IGNOREEOF=1
 
 # check for program existence (only if it's a file)
 function exists() { type -P $1 >/dev/null 2>&1; }
@@ -101,21 +120,21 @@ function set_ps1() { #{{{
 	#local _cmd_not_ok="${BRed}\342\223\247 ${DefCol}"
 	local _cmd_ok="${BWhite}*${DefCol}"
 	local _cmd_not_ok="${BRed}x${DefCol}"
-	if [[ -n ${SERVER} ]]; then
-		_cmd_ok="${BWhite} !!! ${BYellow}CAUTION${BWhite} - VPS - ${BYellow}CAUTION${BWhite} !!! ${DefCol}"
-		_cmd_not_ok="${BRed} !!! ${BYellow}CAUTION${BRed} - VPS - ${BYellow}CAUTION${BRed} !!! ${DefCol}"
-	fi
-	_finish_line="\342\225\274"
 	#local _line1_1="\342\224\214"
 	local _line1_1="\342\225\276"
 	local _line="\342\224\200"
+	local _finish_line="\342\225\274"
 	#local _col="\342\224\202"
 	#local _left_wall="\342\224\244"
 	#local _right_wall="\342\224\234"
+	if [[ -n ${SERVER} ]]; then
+		_cmd_ok="${BYellow} !!!${BWhite} - ${SERVER} - ${BYellow}!!! ${DefCol}"
+		_cmd_not_ok="${BRed} !!!${BWhite} - ${BRed}${SERVER}${BWhite} - ${BRed}!!! ${DefCol}"
+
+	fi
 	local _left_wall="["
 	local _right_wall="]"
-	local _col="]"
-	
+
 	local _username="${BGreen}\u@\h${DefCol}";
 	local _path="${BBlue}\w${DefCol}"
 	local _prompt="${BYellow}\\\$${DefCol}"
@@ -129,38 +148,33 @@ function set_ps1() { #{{{
 	# -----------------------------------------------------------------
 } #}}}
 
-# if you do not like the unicode prompt, uncomment the following lines and comment-out the set_ps1
-
-#if [[ ${EUID} == 0 ]] ; then
-#	PS1='\[\e[01;31m\]\h\[\e[01;34m\] \W \[\e[1;31m\]\$ \[\e[0m\e[1m\]'
-#else
-#	PS1='\[\e[01;32m\]\u@\h\[\e[01;34m\] \w \[\e[1;33m\]\$ \[\e[0m\e[1m\]'
-#fi
-#trap "echo -ne \\\e[0m" DEBUG
-set_ps1
+if [[ -n ${SIMPLE_PROMPT} && ${SIMPLE_PROMPT} == 1 ]]; then
+	if [[ ${EUID} == 0 ]] ; then
+		PS1='\[\e[01;31m\]\h\[\e[01;34m\] \W \[\e[1;31m\]\$ \[\e[0m\e[1m\]'
+	else
+		PS1='\[\e[01;32m\]\u@\h\[\e[01;34m\] \w \[\e[1;33m\]\$ \[\e[0m\e[1m\]'
+	fi
+	trap "echo -ne \\\e[0m" DEBUG
+else
+	set_ps1
+fi
 
 # save history at every new line
 PROMPT_COMMAND='history -a'
 
 # History: don't store duplicates
-export HISTCONTROL=erasedups  
+export HISTCONTROL=erasedups
 # History: 10,000 entries
 export HISTSIZE=10000
-
-# When changing directory small typos can be ignored by Bash
-# cd /vr/lgo/apaache
-# will result in: /var/log/apache
-#shopt -s cdspell
-
-export PATH=$PATH:/usr/local/bin:/usr/local/sbin
+# History: Save timestamps
+export HISTTIMEFORMAT="%Y-%m-%d %T "
 
 exists dircolors && eval $(dircolors -b)
 
 # add colors to man pages {{{
 export GROFF_NO_SGR=1 # this is needed to have colorful man
 # Less Colors for Man Pages
-man_color_set=0;
-case "$man_color_set" in
+case "${MAN_COLOR_SET}" in
 	1) # color set 1
 		export LESS_TERMCAP_mb=$'\E[01;31m'       # begin blinking
 		export LESS_TERMCAP_md=$'\E[01;38;5;74m'  # begin bold
@@ -194,18 +208,20 @@ exists less		&& export PAGER=$(type -P less)
 # vim man pager will ignore these less colors, but it uses it's own
 #export MANPAGER=vimmanpager
 
+# For vim in Arch: http://bbs.archlinux.org/viewtopic.php?id=36221
+# So that it actually uses ~/.vimrc
+export EDITOR=vim
+export VISUAL=vim
+
 # grep color
 export GREP_COLOR="1;33"
-
 export MINICOM="-c on"
 
 # let me see the mountpoints in clear way
 exists mount && exists column && mount() { if [[ -z $1 ]]; then /bin/mount | column -t ; else /bin/mount $*; fi }
 
 # aliases {{{
-# we add sbin to path temporarily
-PATH=$PATH:/sbin:/usr/sbin
-# we use "type -P" here to get the full path to the binary
+# use "type -P" here to get the full path to the binary
 exists aptitude 	&& alias a=$(type -P aptitude)
 exists pacman		&& alias p=$(type -P pacman)
 exists pacman-color	&& alias p=$(type -P pacman-color)
@@ -227,15 +243,6 @@ alias telnetssl='openssl s_client -crlf -connect'
 alias psc='ps xawf -eo pid,user,cgroup,args'
 #}}}
 
-# For vim in Arch: http://bbs.archlinux.org/viewtopic.php?id=36221
-# So that it actually uses ~/.vimrc
-export EDITOR=vim
-export VISUAL=vim
-
-# yes, I intentionally force the TERM to linux, I like it this way, even in my X terminals
-export TERM=linux
-
-
 # root stuff
 #if [[ ${EUID} == 0 ]] ; then
 #	# rc scripts managing
@@ -249,7 +256,6 @@ export TERM=linux
 #fi
 
 log() {
-	# sudo if not root
 	if [[ ${EUID} != 0 ]] ; then
 		echo got root \?
 		return 1
@@ -259,10 +265,8 @@ log() {
 
 	# what to use for tail
 	tail="tail -F -n 150"
-	#tail="grc -c conf.metalog tail -F -n 150"
 	type -P grc >/dev/null 2>&1 && tail="grc -c conf.log tail -F -n 150"
 
-	#[[ -z $wanted ]] && wanted="everything"
 	[[ -z $wanted ]] && wanted="messages"
 
 	if [[ ! -f $wanted ]]; then
@@ -289,6 +293,6 @@ log() {
 	$tail $wanted
 }
 
-
 unset -f exists
+
 

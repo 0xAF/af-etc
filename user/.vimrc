@@ -611,7 +611,7 @@ if has("gui_running")
 endif
 map <F3> \ig
 
-call pathogen#infect()
+"call pathogen#infect()
 
 " only checked if you explicitly run :SyntasticCheck
 let syntastic_mode_map = { 'passive_filetypes': ['html'] }
