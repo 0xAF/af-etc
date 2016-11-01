@@ -323,7 +323,10 @@ if has("gui_running")
 
 	"colorscheme blue
 	"set gfn=Terminus\ 14
-	set guifont=Droid\ Sans\ Mono\ for\ Powerline\ 13
+	"set guifont=Droid\ Sans\ Mono\ for\ Powerline\ 13
+	"set guifont=Source\ Code\ Pro\ for\ Powerline\ 13
+	"set guifont=Terminus\ \(TTF\)\ for\ Powerline\ Medium\ 15
+	set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 13
 	"winsize 146 40
 	"	let g:af_orig_titlestring = "[" . hostname() . "] %F%<%=%((%m%r)%) [F2 - Help]"
 	let g:af_orig_titlestring = "%<%= %((%m%r)%) - [" . hostname() . "] - [F2 - Help]"
@@ -611,7 +614,7 @@ if has("gui_running")
 endif
 map <F3> \ig
 
-"call pathogen#infect()
+call pathogen#infect()
 
 " only checked if you explicitly run :SyntasticCheck
 let syntastic_mode_map = { 'passive_filetypes': ['html'] }
@@ -620,4 +623,12 @@ let mojo_highlight_data = 1
 
 " \l in visual - convert *selected* to <%=l '*selected*'%>, for use with mojo's ep
 vmap \l :s/\%V\(.*\)\%V/<%=l '\1'%>/<CR>:let @/ = ""<CR>``
+
+
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+
+autocmd Syntax * call SyntaxRange#Include('.*@begin=html@', '.*@end=html@', 'html', 'NonText') 
+
+
 

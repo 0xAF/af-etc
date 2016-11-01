@@ -35,6 +35,9 @@ function set_ps1() { #{{{
 	# Reset
 	local Color_Off='\[\e[0m\]'       # Text Reset
 
+	# Smooth Blue
+	local SmoothBlue='\[\e[01;38;5;111m\]'
+
 	# Regular Colors
 	local Black='\[\e[0;30m\]'        # Black
 	local Red='\[\e[0;31m\]'          # Red
@@ -136,9 +139,9 @@ function set_ps1() { #{{{
 	local _right_wall="]"
 
 	local _username="${BGreen}\u@\h${DefCol}";
-	local _path="${BBlue}\w${DefCol}"
+	local _path="${SmoothBlue}\w${DefCol}"
 	local _prompt="${BYellow}\\\$${DefCol}"
-	[[ ${EUID} == 0 ]] && _username="${BRed}\h${DefCol}" && _path="${BBlue}\W${DefCol}" && _prompt="${BRed}\\\$${DefCol}"
+	[[ ${EUID} == 0 ]] && _username="${BRed}\h${DefCol}" && _path="${SmoothBlue}\W${DefCol}" && _prompt="${BRed}\\\$${DefCol}"
 
 	PS1="${DefCol}${_line1_1}${_left_wall}\$( [[ \$? == 0 ]] && echo \"$_cmd_ok\" || echo \"$_cmd_not_ok\" )${_right_wall}${_line}${_left_wall}${_username}${_right_wall}${_line}${_left_wall}${_path}${_right_wall}${_line}${_left_wall}${_prompt}${_right_wall}${_finish_line} ${BWhite}"
 
@@ -168,6 +171,9 @@ export HISTCONTROL=erasedups
 export HISTSIZE=10000
 # History: Save timestamps
 export HISTTIMEFORMAT="%Y-%m-%d %T "
+
+# mtr
+export MTR_OPTIONS='-o LSRNABWV'
 
 exists dircolors && eval $(dircolors -b)
 
