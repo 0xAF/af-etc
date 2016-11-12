@@ -1,17 +1,27 @@
 # 0xAF: this is my system-wide bashrc
 
+# you can ignore this block {{{
 # non-interactive shell checks
 [ -z "$BASH_VERSION" -o -z "$PS1" -o -z "$BASH" ] && return # debian scripts fail to execute [[ ... ]] checks, so leave here
 if [[ $- != *i* ]] ; then return; fi # shell is non-interactive... leave here
+function exists() { type -P $1 >/dev/null 2>&1; } # helper function to check for program existence (but only if it's a file)
+# }}}
+
+# settings you might want to change
 
 #SERVER="MyServer" # set this if the script is installed on a server (will modify PS1)
 #SIMPLE_PROMPT=1 # set this if you dont like the unicode prompt
-MAN_COLOR_SET=2 # colorful man pages; 0==disable, 1==color_set_1; *==default_debian_color_set
+
+MAN_COLOR_SET=2 # colorful man pages; 0==system_default, 1==color_set_1; *==default_debian_color_set
+#export MANPAGER=vimmanpager # you can ignore MAN_COLOR_SET variable and use vimmanpager instead
+
+# I use vim for everything
+exists vim			&& export EDITOR=$(type -P vim) && VISUAL=$(type -P vim)
 
 # yes, I intentionally force the TERM to linux, I like it this way, even in my X terminals
 export TERM=linux
 
-# we add sbin to path temporarily
+# add sbin to path temporarily
 export PATH=$PATH:/sbin:/usr/sbin:/usr/local/bin:/usr/local/sbin
 
 # When changing directory small typos can be ignored by Bash
@@ -25,8 +35,35 @@ shopt -s autocd
 # you need to hit Ctrl-D two times to exit the shell
 #export IGNOREEOF=1
 
-# check for program existence (only if it's a file)
-function exists() { type -P $1 >/dev/null 2>&1; }
+# aliases {{{
+# use "type -P" here to get the full path to the binary
+exists aptitude 	&& alias a=$(type -P aptitude)
+exists pacman		&& alias p=$(type -P pacman)
+exists pacman-color	&& alias p=$(type -P pacman-color)
+exists yaourt		&& alias y=$(type -P yaourt)
+exists mtr			&& alias mtr="$(type -P mtr) --curses"
+exists mplayer		&& alias mplayer='LANG=bg_BG.UTF-8 LC_ALL=bg_BG.UTF-8 LANGUAGE=bg_BG.UTF-8 mplayer -subcp cp1251'
+exists equo			&& alias eq=$(type -P equo)
+exists wget			&& alias wget="$(type -P wget) --trust-server-names --content-disposition"
+exists curl			&& alias pastesprunge="$(type -P curl) -F \"sprunge=<-\" http://sprunge.us"
+exists xargs		&& alias map="$(type -P xargs) -n1"
+exists perl			&& alias rot13='perl -pe "y/A-Za-z/N-ZA-Mn-za-m/;"'
+exists vim 			&& alias vi=$(type -P vim)
+exists openssl		&& alias telnetssl='openssl s_client -crlf -connect'
+
+unalias ls 2>/dev/null
+alias ls="$(type -P ls) --color=auto --group-directories-first -p"
+alias grep="$(type -P grep) --color=auto"
+alias psc='ps xawf -eo pid,user,cgroup,args'
+alias path='echo -e ${PATH//:/\\n}'
+#}}}
+
+
+# check the rest of this file, but it's not very interesting after this line
+
+
+
+
 
 function set_ps1() { #{{{
 
@@ -117,24 +154,30 @@ function set_ps1() { #{{{
 	# http://unicode-table.com/en/#23B7
 	# http://0xcc.net/jsescape/
 
-	#local _cmd_ok="\[\e[1;32m\]\342\216\267 "
-	#local _cmd_not_ok="\[\e[1;31m\]\342\212\235"
-	#local _cmd_ok="${BGreen}\342\223\245 ${DefCol}"
-	#local _cmd_not_ok="${BRed}\342\223\247 ${DefCol}"
+	# symbol set 1 (ascii)
 	local _cmd_ok="${BWhite}*${DefCol}"
 	local _cmd_not_ok="${BRed}x${DefCol}"
-	#local _line1_1="\342\224\214"
-	local _line1_1="\342\225\276"
-	local _line="\342\224\200"
-	local _finish_line="\342\225\274"
-	#local _col="\342\224\202"
-	#local _left_wall="\342\224\244"
-	#local _right_wall="\342\224\234"
+
+	# symbol set 2 (unicode)
+	#local _cmd_ok="\[\e[1;32m\]\342\216\267 "
+	#local _cmd_not_ok="\[\e[1;31m\]\342\212\235"
+
+	# symbol set 3 (unicode)
+	#local _cmd_ok="${BGreen}\342\223\245 ${DefCol}"
+	#local _cmd_not_ok="${BRed}\342\223\247 ${DefCol}"
+
+	# set these for servers
 	if [[ -n ${SERVER} ]]; then
 		_cmd_ok="${BYellow} !!!${BWhite} - ${SERVER} - ${BYellow}!!! ${DefCol}"
 		_cmd_not_ok="${BRed} !!!${BWhite} - ${BRed}${SERVER}${BWhite} - ${BRed}!!! ${DefCol}"
-
 	fi
+
+	local _line1_1="\342\225\276"
+	local _line="\342\224\200"
+	local _finish_line="\342\225\274"
+
+	#local _left_wall="\342\224\244"
+	#local _right_wall="\342\224\234"
 	local _left_wall="["
 	local _right_wall="]"
 
@@ -175,12 +218,13 @@ export HISTTIMEFORMAT="%Y-%m-%d %T "
 # mtr
 export MTR_OPTIONS='-o LSRNABWV'
 
-exists dircolors && eval $(dircolors -b)
+exists dircolors && eval $(dircolors)
 
 # add colors to man pages {{{
 export GROFF_NO_SGR=1 # this is needed to have colorful man
 # Less Colors for Man Pages
 case "${MAN_COLOR_SET}" in
+	0) ;;
 	1) # color set 1
 		export LESS_TERMCAP_mb=$'\E[01;31m'       # begin blinking
 		export LESS_TERMCAP_md=$'\E[01;38;5;74m'  # begin bold
@@ -207,17 +251,8 @@ export LESSCOLOR=yes
 exists lesspipe.sh	&& export LESSOPEN="|lesspipe.sh %s"
 exists lesspipe		&& export LESSOPEN="|lesspipe %s"
 exists pygmentize	&& export LESSCOLORIZER=pygmentize
-exists vim		&& export EDITOR=$(type -P vim)
-exists less		&& export PAGER=$(type -P less)
-#[ -x /bin/vimpager ]	&& export PAGER=/bin/vimpager && alias less=$PAGER
-
-# vim man pager will ignore these less colors, but it uses it's own
-#export MANPAGER=vimmanpager
-
-# For vim in Arch: http://bbs.archlinux.org/viewtopic.php?id=36221
-# So that it actually uses ~/.vimrc
-export EDITOR=vim
-export VISUAL=vim
+exists less			&& export PAGER=$(type -P less)
+#exists vimpager	&& export PAGER=$(type -P vimpager) && alias less=$PAGER
 
 # grep color
 export GREP_COLOR="1;33"
@@ -225,29 +260,6 @@ export MINICOM="-c on"
 
 # let me see the mountpoints in clear way
 exists mount && exists column && mount() { if [[ -z $1 ]]; then /bin/mount | column -t ; else /bin/mount $*; fi }
-
-# aliases {{{
-# use "type -P" here to get the full path to the binary
-exists aptitude 	&& alias a=$(type -P aptitude)
-exists pacman		&& alias p=$(type -P pacman)
-exists pacman-color	&& alias p=$(type -P pacman-color)
-exists yaourt		&& alias y=$(type -P yaourt)
-exists mtr		&& alias mtr="$(type -P mtr) --curses"
-exists mplayer		&& alias mplayer='LANG=bg_BG.UTF-8 LC_ALL=bg_BG.UTF-8 LANGUAGE=bg_BG.UTF-8 mplayer -subcp cp1251'
-exists equo		&& alias eq=$(type -P equo)
-exists wget		&& alias wget="$(type -P wget) --trust-server-names --content-disposition"
-exists curl		&& alias pastesprunge="$(type -P curl) -F \"sprunge=<-\" http://sprunge.us"
-exists xargs		&& alias map="$(type -P xargs) -n1"
-exists vim 		&& alias vi=$(type -P vim)
-alias path='echo -e ${PATH//:/\\n}'
-unalias ls 2>/dev/null
-alias ls="$(type -P ls) --color=auto --group-directories-first -p"
-alias grep="$(type -P grep) --color=auto"
-alias rot13='perl -pe "y/A-Za-z/N-ZA-Mn-za-m/;"'
-alias ff='find . -iname'
-alias telnetssl='openssl s_client -crlf -connect'
-alias psc='ps xawf -eo pid,user,cgroup,args'
-#}}}
 
 # root stuff
 #if [[ ${EUID} == 0 ]] ; then
@@ -261,7 +273,7 @@ alias psc='ps xawf -eo pid,user,cgroup,args'
 #	rc-status() { for arg in $*; do rc $arg status; done }
 #fi
 
-log() {
+log() { # show system logs {{{
 	if [[ ${EUID} != 0 ]] ; then
 		echo got root \?
 		return 1
@@ -297,16 +309,15 @@ log() {
 	echo "$wanted"
 	echo
 	$tail $wanted
-}
-
+} # }}}
 
 # http://stackoverflow.com/questions/7374534/directory-bookmarking-for-bash
-function cdb() {
+CD_BOOKMARKS_PATH="$HOME/.cd_bookmarks"
+function cdb() { # CD Bookmarks (with editable scripts) {{{
 	local USAGE="Usage: cdb [-c|-g|-d|-l] [bookmark]" ;
-	local dir="$HOME/.cd_bookmarks"
 
-	if  [ ! -e "$dir" ] ; then
-		mkdir "$dir"
+	if  [ ! -e "$CD_BOOKMARKS_PATH" ] ; then
+		mkdir "$CD_BOOKMARKS_PATH"
 	fi
 
 	local argument=$1
@@ -315,11 +326,11 @@ function cdb() {
 	case $argument in
 		# create bookmark
 		-c)
-			if [ ! -f "$dir"/"$1" ] ; then
-				echo '#!/bin/bash' > "$dir"/"$1" ;
-				echo "# You can modify this script to your liking, it will be called by 'cdb $1'" >> "$dir"/"$1" ;
-				echo "cd '`pwd`'" >> "$dir"/"$1" ;
-				echo "Bookmark created '$dir/$1'"
+			if [ ! -f "$CD_BOOKMARKS_PATH"/"$1" ] ; then
+				echo '#!/bin/bash' > "$CD_BOOKMARKS_PATH"/"$1" ;
+				echo "# You can modify this script to your liking, it will be called by 'cdb $1'" >> "$CD_BOOKMARKS_PATH"/"$1" ;
+				echo "cd '`pwd`'" >> "$CD_BOOKMARKS_PATH"/"$1" ;
+				echo "Bookmark created '$CD_BOOKMARKS_PATH/$1'"
 				echo "You can modify this script to your liking, it will be called by 'cdb $1'"
 			else
 				echo "ERROR: Bookmark '$1' already exist."
@@ -328,8 +339,8 @@ function cdb() {
 
 		# goto bookmark
 		-g)
-			if [ -f "$dir"/"$1" ] ; then 
-				source "$dir"/"$1"
+			if [ -f "$CD_BOOKMARKS_PATH"/"$1" ] ; then 
+				source "$CD_BOOKMARKS_PATH"/"$1"
 			else
 				echo "ERROR: Bookmark not found."
 				cdb -l
@@ -338,8 +349,8 @@ function cdb() {
 
 		# delete bookmark
 		-d)
-			if [ -f "$dir"/"$1" ] ; then 
-				rm "$dir"/"$1" ;
+			if [ -f "$CD_BOOKMARKS_PATH"/"$1" ] ; then 
+				rm "$CD_BOOKMARKS_PATH"/"$1" ;
 			else
 				echo "ERROR: Bookmark not found."
 				cdb -l
@@ -349,7 +360,7 @@ function cdb() {
 		# list bookmarks
 		-l)
 			echo "Available bookmarks:"
-			ls -ABQm "$dir" ;
+			ls -ABQm "$CD_BOOKMARKS_PATH" | column -t
 			;;
 
 		# default to call -g or show help
@@ -363,8 +374,10 @@ function cdb() {
 			;;
 	esac
 }
+complete -o filenames -W "$(find "$CD_BOOKMARKS_PATH" -type f -printf "%f\n")" cdb
+# }}} 
 
+unset -f exists # remove helper function
 
-unset -f exists
-
+# vim: set syntax=sh ts=4 sw=4 ss=4 ff=unix fdm=marker : 
 
