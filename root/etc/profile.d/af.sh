@@ -299,6 +299,72 @@ log() {
 	$tail $wanted
 }
 
+
+# http://stackoverflow.com/questions/7374534/directory-bookmarking-for-bash
+function cdb() {
+	local USAGE="Usage: cdb [-c|-g|-d|-l] [bookmark]" ;
+	local dir="$HOME/.cd_bookmarks"
+
+	if  [ ! -e "$dir" ] ; then
+		mkdir "$dir"
+	fi
+
+	local argument=$1
+	shift
+
+	case $argument in
+		# create bookmark
+		-c)
+			if [ ! -f "$dir"/"$1" ] ; then
+				echo '#!/bin/bash' > "$dir"/"$1" ;
+				echo "# You can modify this script to your liking, it will be called by 'cdb $1'" >> "$dir"/"$1" ;
+				echo "cd '`pwd`'" >> "$dir"/"$1" ;
+				echo "Bookmark created '$dir/$1'"
+				echo "You can modify this script to your liking, it will be called by 'cdb $1'"
+			else
+				echo "ERROR: Bookmark '$1' already exist."
+			fi
+			;;
+
+		# goto bookmark
+		-g)
+			if [ -f "$dir"/"$1" ] ; then 
+				source "$dir"/"$1"
+			else
+				echo "ERROR: Bookmark not found."
+				cdb -l
+			fi
+			;;
+
+		# delete bookmark
+		-d)
+			if [ -f "$dir"/"$1" ] ; then 
+				rm "$dir"/"$1" ;
+			else
+				echo "ERROR: Bookmark not found."
+				cdb -l
+			fi    
+			;;
+
+		# list bookmarks
+		-l)
+			echo "Available bookmarks:"
+			ls -ABQm "$dir" ;
+			;;
+
+		# default to call -g or show help
+		*)
+			if [ "$1" ]; then
+				cdb -g $*
+			else
+				echo "$USAGE"
+				cdb -l
+			fi
+			;;
+	esac
+}
+
+
 unset -f exists
 
 
