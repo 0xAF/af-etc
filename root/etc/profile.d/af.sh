@@ -313,12 +313,12 @@ log() { # show system logs {{{
 
 # http://stackoverflow.com/questions/7374534/directory-bookmarking-for-bash
 CD_BOOKMARKS_PATH="$HOME/.cd_bookmarks"
+if  [ ! -e "$CD_BOOKMARKS_PATH" ] ; then
+	mkdir "$CD_BOOKMARKS_PATH"
+fi
+
 function cdb() { # CD Bookmarks (with editable scripts) {{{
 	local USAGE="Usage: cdb [-c|-g|-d|-l] [bookmark]" ;
-
-	if  [ ! -e "$CD_BOOKMARKS_PATH" ] ; then
-		mkdir "$CD_BOOKMARKS_PATH"
-	fi
 
 	local argument=$1
 	shift
@@ -333,7 +333,7 @@ function cdb() { # CD Bookmarks (with editable scripts) {{{
 				echo "Bookmark created '$CD_BOOKMARKS_PATH/$1'"
 				echo "You can modify this script to your liking, it will be called by 'cdb $1'"
 			else
-				echo "ERROR: Bookmark '$1' already exist."
+				echo "ERROR: Bookmark [$1] already exist."
 			fi
 			;;
 
@@ -342,7 +342,7 @@ function cdb() { # CD Bookmarks (with editable scripts) {{{
 			if [ -f "$CD_BOOKMARKS_PATH"/"$1" ] ; then 
 				source "$CD_BOOKMARKS_PATH"/"$1"
 			else
-				echo "ERROR: Bookmark not found."
+				echo "ERROR: Bookmark [$1] not found."
 				cdb -l
 			fi
 			;;
@@ -352,7 +352,7 @@ function cdb() { # CD Bookmarks (with editable scripts) {{{
 			if [ -f "$CD_BOOKMARKS_PATH"/"$1" ] ; then 
 				rm "$CD_BOOKMARKS_PATH"/"$1" ;
 			else
-				echo "ERROR: Bookmark not found."
+				echo "ERROR: Bookmark [$1] not found."
 				cdb -l
 			fi    
 			;;
@@ -365,8 +365,8 @@ function cdb() { # CD Bookmarks (with editable scripts) {{{
 
 		# default to call -g or show help
 		*)
-			if [ "$1" ]; then
-				cdb -g $*
+			if [ -n "$argument" ]; then
+				cdb -g $argument $*
 			else
 				echo "$USAGE"
 				cdb -l
