@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# rm init.sh; wget 192.168.1.77:8000/init.sh && chmod +x init.sh
-
 if [[ ${EUID} == 0 ]]; then
 	echo "start me with your user."
 	exit 1

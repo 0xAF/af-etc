@@ -5,15 +5,15 @@ Some files and scripts I put on newly installed systems.
 
 ### usage
 
-Instead of running the init script below you should sneak into the configs and copy what you like ...
+You should probably have a look at the scripts and config files and pickup only what you need/want.
 
-*Use at your own risk!! this will overwrite your current zsh, ssh, vim and git config.*
+*Use at your own risk!! this will overwrite some of your configurations.*
 
-    wget https://raw.github.com/0xAF/af-etc/master/init/init.sh && chmod a+x init.sh
+    wget https://raw.github.com/0xAF/af-etc/master/init.sh && chmod +x init.sh
 
 ### acknowledgement
 
-I've dropped my install method and used some stuff from https://github.com/seebi/rc
+I've used some ideas from https://github.com/seebi/rc. Mainly the Makefile idea.
 
 LICENSE
 =======
