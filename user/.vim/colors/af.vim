@@ -20,7 +20,7 @@ hi User3	guifg=red   		guibg=darkblue
 hi User4	guifg=cyan  		guibg=darkblue
 hi User5	guifg=lightgreen	guibg=darkblue
 
-hi Normal	guifg=#cff		guibg=#030707
+hi Normal	guifg=#ccffff		guibg=#030707
 hi Cursor	guifg=slategrey		guibg=khaki
 hi Comment	guifg=#808080
 hi Identifier	guifg=#87def0				gui=bold

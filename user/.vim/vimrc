@@ -1,0 +1,18 @@
+" AngelFire's .vimrc file
+
+source $HOME/.vim/basics.vim
+source $HOME/.vim/autocmds.vim
+source $HOME/.vim/mappings.vim
+source $HOME/.vim/commands.vim
+source $HOME/.vim/syntax.vim
+source $HOME/.vim/gui.vim
+source $HOME/.vim/plugins.vim
+
+if has('nvim')
+source $HOME/.vim/neovim.vim
+endif
+
+
+
+
+

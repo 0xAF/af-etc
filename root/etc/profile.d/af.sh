@@ -19,7 +19,7 @@ MAN_COLOR_SET=2 # colorful man pages; 0==system_default, 1==color_set_1; *==defa
 exists vim			&& export EDITOR=$(type -P vim) && VISUAL=$(type -P vim)
 
 # yes, I intentionally force the TERM to linux, I like it this way, even in my X terminals
-export TERM=linux
+#export TERM=linux
 
 # add sbin to path temporarily
 export PATH=$PATH:/sbin:/usr/sbin:/usr/local/bin:/usr/local/sbin
@@ -50,6 +50,8 @@ exists xargs		&& alias map="$(type -P xargs) -n1"
 exists perl			&& alias rot13='perl -pe "y/A-Za-z/N-ZA-Mn-za-m/;"'
 exists vim 			&& alias vi=$(type -P vim)
 exists openssl		&& alias telnetssl='openssl s_client -crlf -connect'
+exists perl			&& alias hexdecode='perl -pe '\''s/([0-9a-f]{2})/chr hex $1/gie'\'''
+exists od			&& alias hexencode='od -A n -t x1 -v | sed -e "s/ //g"'
 
 unalias ls 2>/dev/null
 alias ls="$(type -P ls) --color=auto --group-directories-first -p"
@@ -246,7 +248,7 @@ case "${MAN_COLOR_SET}" in
 esac
 #}}}
 
-export LESS="$LESS -i -r -M"
+export LESS="$LESS -i -r -M -X"
 export LESSCOLOR=yes
 exists lesspipe.sh	&& export LESSOPEN="|lesspipe.sh %s"
 exists lesspipe		&& export LESSOPEN="|lesspipe %s"
@@ -376,6 +378,16 @@ function cdb() { # CD Bookmarks (with editable scripts) {{{
 }
 complete -o filenames -W "$(find "$CD_BOOKMARKS_PATH" -type f -printf "%f\n")" cdb
 # }}} 
+
+if [[ -z ${SERVER} ]]; then
+	export WEATHER_PROVIDER='http://wttr.in/Варна?lang=bg'
+	test -f ~/.wttr.in || curl -sk $WEATHER_PROVIDER -o ~/.wttr.in
+	find ~ -maxdepth 1 -name .wttr.in -cmin +5 -exec curl -sk $WEATHER_PROVIDER -o ~/.wttr.in \;
+	echo
+	head -7 ~/.wttr.in | tail -5
+	echo
+	W(){ find ~ -maxdepth 1 -name .wttr.in -cmin +5 -exec curl -sk $WEATHER_PROVIDER -o ~/.wttr.in \;; head -37 ~/.wttr.in; }
+fi
 
 unset -f exists # remove helper function
 

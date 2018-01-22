@@ -2,6 +2,7 @@
 # 0xAF: this is install script for my /etc essential files, I use this on newly installed systems.
 
 # set $ID to >0, and you will be able to install user-specific stuff for root
+# or pass "-u" to the script
 ID=$EUID
 
 trap "unset -f exists; unset -f die" EXIT
@@ -9,10 +10,10 @@ trap "unset -f exists; unset -f die" EXIT
 function exists() { type -P $1 >/dev/null 2>&1; }
 function die() { echo; echo $*; echo; exit 1; }
 
-echo "0xAF: call this script with root to install system-wide stuff"
-echo "0xAF: call this script with user to install user specific stuff"
-echo "0xAF: call this script with '-f' option to force overwrite"
-echo
+#echo "0xAF: call this script with root to install system-wide stuff"
+#echo "0xAF: call this script with user to install user specific stuff"
+#echo "0xAF: call this script with '-f' option to force overwrite"
+#echo
 
 exists dirname	|| die "cannot find 'dirname' utility..."
 exists basename	|| die "cannot find 'basename' utility..."
@@ -25,6 +26,7 @@ exists cut	|| die "cannot find 'cut' utility..."
 cd "$(dirname $0)"
 
 [[ "$1" = "-f" ]] && overwrite=" (force-overwrite)"
+[[ "$1" = "-u" ]] && ID=1 # force user stuff even if we are root
 
 echo -n "installing "
 (( $ID )) && echo -n "user specific" || echo -n "system-wide"
@@ -104,4 +106,5 @@ done
 
 #uniq_dirs=$( ( IFS=$'\n'; echo "${INSTD[*]}" ) | sort | uniq )
 
+echo "Done."
 

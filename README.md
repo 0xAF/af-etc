@@ -1,12 +1,19 @@
 af-etc
 ======
 
-Some files and scripts I need on newly installed systems.
+Some files and scripts I put on newly installed systems.
 
-Install this with the install.sh script.
-The script can install system-wide or user-specific stuff
-depending on how it's called.
+### usage
 
+Instead of running the init script below you should sneak into the configs and copy what you like ...
+
+*Use at your own risk!! this will overwrite your current zsh, ssh, vim and git config.*
+
+    wget https://raw.github.com/0xAF/af-etc/master/init/init.sh && chmod a+x init.sh
+
+### acknowledgement
+
+I've dropped my install method and used some stuff from https://github.com/seebi/rc
 
 LICENSE
 =======
