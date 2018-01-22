@@ -20,4 +20,5 @@ git clone https://github.com/0xAF/af-etc.git ~/.config/af-etc
 cd ~/.config/af-etc
 make user
 sudo make system
+sudo make user
 
