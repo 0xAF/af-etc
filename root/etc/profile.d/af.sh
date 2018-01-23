@@ -153,19 +153,24 @@ function set_ps1() { #{{{
 	# i use Terminus font for linux-console/xterms and these symbols looks good on it
 	# you may need to change them if you're using another font
 	# use these pages to find and convert unicode chars
+	# https://en.wikipedia.org/wiki/List_of_Unicode_characters
 	# http://unicode-table.com/en/#23B7
 	# http://0xcc.net/jsescape/
 
 	# symbol set 1 (ascii)
-	local _cmd_ok="${BWhite}*${DefCol}"
-	local _cmd_not_ok="${BRed}x${DefCol}"
+	#local _cmd_ok="${BWhite}*${DefCol}"
+	#local _cmd_not_ok="${BRed}x${DefCol}"
 
 	# symbol set 2 (unicode)
-	#local _cmd_ok="\[\e[1;32m\]\342\216\267 "
-	#local _cmd_not_ok="\[\e[1;31m\]\342\212\235"
+	local _cmd_ok="${BWhite}✔${DefCol}"
+	local _cmd_not_ok="${BRed}✘${DefCol}"
 
 	# symbol set 3 (unicode)
-	#local _cmd_ok="${BGreen}\342\223\245 ${DefCol}"
+	#local _cmd_ok="${BWhite}\342\216\267${DefCol}"
+	#local _cmd_not_ok="${BRed}\342\212\235${DefCol}"
+
+	# symbol set 4 (unicode)
+	#local _cmd_ok="${BWhite}\342\223\245 ${DefCol}"
 	#local _cmd_not_ok="${BRed}\342\223\247 ${DefCol}"
 
 	# set these for servers
@@ -174,14 +179,18 @@ function set_ps1() { #{{{
 		_cmd_not_ok="${BRed} !!!${BWhite} - ${BRed}${SERVER}${BWhite} - ${BRed}!!! ${DefCol}"
 	fi
 
-	local _line1_1="\342\225\276"
-	local _line="\342\224\200"
-	local _finish_line="\342\225\274"
+	#local _line1_1="\342\225\276" # ╾
+	#local _line="\342\224\200" # ─
+	#local _finish_line="\342\225\274" # ╼
+
+	local _line1_1="╾"		# ╾
+	local _line="╌" 		# ─ ╌ ┄ ┈
+	local _finish_line="╼►"	# ╼ ▶ ▷ ► ▻ 
 
 	#local _left_wall="\342\224\244"
 	#local _right_wall="\342\224\234"
-	local _left_wall="["
-	local _right_wall="]"
+	local _left_wall="┊"	# ┊ ┆ ╎ [ ┤ ┨ ╢
+	local _right_wall="┊"	# ┊ ┆ ╎ ] ├ ┠ ╟
 
 	local _username="${BGreen}\u@\h${DefCol}";
 	local _path="${SmoothBlue}\w${DefCol}"
