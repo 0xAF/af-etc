@@ -1,5 +1,5 @@
 
-" highlight extra white spaces {{{
+" highlight extra white spaces
 
 "highlight ExtraWhitespace ctermbg=red guibg=red
 " The following alternative may be less obtrusive.
@@ -18,7 +18,7 @@ au InsertLeave * match ExtraWhiteSpace /^\s* \s*\|\s\+$/
 
 autocmd BufWinEnter * match ExtraWhitespace /^\s* \s*\|\s\+$/
 
-"}}}
 
 
+set bg=dark
 
