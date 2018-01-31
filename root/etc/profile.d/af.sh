@@ -17,6 +17,7 @@ MAN_COLOR_SET=2 # colorful man pages; 0==system_default, 1==color_set_1; *==defa
 
 # I use vim for everything
 exists vim			&& export EDITOR=$(type -P vim) && VISUAL=$(type -P vim)
+#exists nvim			&& export EDITOR=$(type -P nvim) && VISUAL=$(type -P nvim)
 
 # yes, I intentionally force the TERM to linux, I like it this way, even in my X terminals
 #export TERM=linux
@@ -49,6 +50,7 @@ exists curl			&& alias pastesprunge="$(type -P curl) -F \"sprunge=<-\" http://sp
 exists xargs		&& alias map="$(type -P xargs) -n1"
 exists perl			&& alias rot13='perl -pe "y/A-Za-z/N-ZA-Mn-za-m/;"'
 exists vim 			&& alias vi=$(type -P vim)
+#exists nvim 		&& alias vi=$(type -P nvim)
 exists openssl		&& alias telnetssl='openssl s_client -crlf -connect'
 exists perl			&& alias hexdecode='perl -pe '\''s/([0-9a-f]{2})/chr hex $1/gie'\'''
 exists od			&& alias hexencode='od -A n -t x1 -v | sed -e "s/ //g"'
@@ -395,7 +397,7 @@ if [[ -z ${SERVER} ]]; then
 	echo
 	head -7 ~/.wttr.in | tail -5
 	echo
-	W(){ find ~ -maxdepth 1 -name .wttr.in -cmin +5 -exec curl -sk $WEATHER_PROVIDER -o ~/.wttr.in \;; head -37 ~/.wttr.in; }
+	W(){ test -f ~/.wttr.in || curl -sk $WEATHER_PROVIDER -o ~/.wttr.in; find ~ -maxdepth 1 -name .wttr.in -cmin +5 -exec curl -sk $WEATHER_PROVIDER -o ~/.wttr.in \;; head -37 ~/.wttr.in; }
 fi
 
 unset -f exists # remove helper function

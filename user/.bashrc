@@ -9,7 +9,8 @@ function exists() { type -P $1 >/dev/null 2>&1; }
 
 # colors for ls, etc.  Prefer ~/.dir_colors #64489
 if [[ -f ~/.dircolors/dircolors.256dark ]]; then
-	eval `dircolors -b ~/.dircolors/dircolors.256dark`
+	#eval `dircolors -b ~/.dircolors/dircolors.256dark`
+	eval `dircolors -b ~/.dircolors/LS_COLORS`
 else
 	eval `dircolors -b`
 fi
