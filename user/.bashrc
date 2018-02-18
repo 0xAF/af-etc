@@ -35,7 +35,8 @@ esac
 #export CVSROOT=:pserver:af@af.mis.bg:/root
 
 if exists keychain; then
-	keychain --inherit any -Q ~/.ssh/id_rsa ~/.ssh/old_id_dsa ~/.ssh/id_dsa.octagon ~/.ssh/github_rsa ~/.ssh/bitbucket_rsa ~/.ssh/git.0xaf.org_rsa A8B855BD DA3BB96F
+	# ~/.ssh/old_id_dsa ~/.ssh/id_dsa.octagon
+	keychain --inherit any -Q ~/.ssh/id_rsa ~/.ssh/github_rsa ~/.ssh/bitbucket_rsa ~/.ssh/git.0xaf.org_rsa A8B855BD DA3BB96F
 	. ~/.keychain/${HOSTNAME}-sh
 	. ~/.keychain/${HOSTNAME}-sh-gpg
 fi
@@ -125,5 +126,10 @@ unset -f exists
 #source ~/perl5/perlbrew/etc/bashrc
 
 export PATH=$PATH:/storage/hacks/lenovo_tab3_730x/bin
+
+# sensitive data
+if [[ -f ~/.bashrc.local ]]; then
+	source ~/.bashrc.local
+fi
 
 

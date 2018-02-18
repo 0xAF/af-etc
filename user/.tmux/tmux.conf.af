@@ -32,15 +32,23 @@ bind-key K confirm kill-server
 bind-key b set-option status
 
 # Use Alt-arrow keys without prefix key to switch windows
-bind -n M-Left previous-window
-bind -n M-Right next-window
+#bind -n M-Left previous-window
+#bind -n M-Right next-window
+
+# Use shift-arrow keys without prefix key to switch windows
+bind -n S-Left previous-window
+bind -n S-Right next-window
 
 # use <prefix>-space to go to last window
 bind Space last-window
 
 # move windows ctrl-alt-left/right
-bind -n C-M-Left swap-window -t -1
-bind -n C-M-Right swap-window -t +1
+#bind -n C-M-Left swap-window -t -1
+#bind -n C-M-Right swap-window -t +1
+
+# move windows ctrl-alt-left/right
+bind -n C-S-Left swap-window -t -1
+bind -n C-S-Right swap-window -t +1
 
 # Use Ctrl-arrow keys without prefix key to switch panes
 bind -n C-Left select-pane -L
@@ -48,30 +56,33 @@ bind -n C-Right select-pane -R
 bind -n C-Up select-pane -U
 bind -n C-Down select-pane -D
 
+bind -n C-S-n new-window
+
 bind-key C-[ copy-mode
 
 bind-key -T copy-mode-vi Escape send-keys -X cancel
 bind-key -T copy-mode-vi Home send-keys -X start-of-line
 bind-key -T copy-mode-vi End send-keys -X end-of-line
 
+bind-key -T copy-mode-vi S-PPage send-keys -X halfpage-up
+bind-key -T copy-mode-vi S-NPage send-keys -X halfpage-down
 
-bind-key -T copy-mode -n S-PPage send-keys -X halfpage-up
-bind-key -T copy-mode -n S-NPage send-keys -X halfpage-down
-bind-key -T copy-mode-vi -n S-PPage send-keys -X halfpage-up
-bind-key -T copy-mode-vi -n S-NPage send-keys -X halfpage-down
+bind-key -T copy-mode-vi C-PPage send-keys -X halfpage-up
+bind-key -T copy-mode-vi C-NPage send-keys -X halfpage-down
 
-bind-key -T copy-mode -n C-PPage send-keys -X halfpage-up
-bind-key -T copy-mode -n C-NPage send-keys -X halfpage-down
-bind-key -T copy-mode-vi -n C-PPage send-keys -X halfpage-up
-bind-key -T copy-mode-vi -n C-NPage send-keys -X halfpage-down
-
-bind-key -T root -n S-PPage copy-mode -eu
-bind-key -T root -n C-PPage copy-mode -eu
+bind-key -n S-PPage copy-mode -eu
+bind-key -n C-PPage copy-mode -eu
+bind-key -n S-NPage refresh
+bind-key -n C-NPage refresh
 bind-key -n WheelUpPane copy-mode -e
 
 bind-key -T copy-mode-vi WheelUpPane   select-pane \; send-keys -X -N 5 scroll-up
 bind-key -T copy-mode-vi WheelDownPane select-pane \; send-keys -X -N 5 scroll-down
 
+bind-key -T copy-mode-vi 'v' send -X begin-selection
+bind-key -T copy-mode-vi 'y' send -X copy-selection
+bind-key -T copy-mode-vi 'Space' send -X halfpage-down
+bind-key -T copy-mode-vi 'Bspace' send -X halfpage-up
 
 bind | split-window -h
 bind - split-window -v
@@ -218,10 +229,10 @@ run '~/.tmux/plugins/tpm/tpm'
 
 
 #### SESSION INITIALIZATION
-new-session -s af
+#new-session -s af
 #new-window -t af
 #new-window -t af
-select-window -t 1
+#select-window -t 1
 
 
 # vim: ft=tmux :

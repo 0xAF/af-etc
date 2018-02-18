@@ -18,7 +18,7 @@ au InsertLeave * match ExtraWhiteSpace /^\s* \s*\|\s\+$/
 
 autocmd BufWinEnter * match ExtraWhitespace /^\s* \s*\|\s\+$/
 
-
+highlight ColorColumn ctermbg=gray guibg=#222222
 
 set bg=dark
 

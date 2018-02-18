@@ -403,4 +403,3 @@ fi
 unset -f exists # remove helper function
 
 # vim: set syntax=sh ts=4 sw=4 ss=4 ff=unix fdm=marker : 
-

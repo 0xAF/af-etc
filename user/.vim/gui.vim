@@ -1,4 +1,4 @@
-" if it is gui {{{
+" if it is gui
 if has("gui_running")
 	colorscheme af
 
@@ -42,5 +42,4 @@ if has("gui_running")
 
 
 endif
-"}}}
 

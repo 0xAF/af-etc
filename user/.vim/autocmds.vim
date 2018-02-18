@@ -56,13 +56,18 @@ autocmd Syntax * call SyntaxRange#Include('.*@begin=javascript@', '.*@end=javasc
 augroup markdown
 	" Markdown (no need for modula2 :)
 	autocmd BufRead,BufNewFile *.md set filetype=markdown
+	autocmd BufRead,BufNewFile *.markdown set filetype=markdown
 	autocmd FileType markdown set wrap linebreak nolist
 	autocmd FileType markdown set textwidth=0
 	autocmd FileType markdown set wrapmargin=0
-	autocmd FileType markdown nmap <leader>m :silent !open %<CR>
+	autocmd FileType markdown set colorcolumn=80
+	autocmd FileType markdown set spell spelllang=en_us
+	autocmd FileType markdown nmap <leader>m :silent !xdg-open %<CR>
 	" http://vim.wikia.com/wiki/All_folds_open_when_opening_a_file
 	" http://stackoverflow.com/questions/5074191/vim-fold-top-level-folds-only
 	autocmd FileType markdown normal %foldc
+	autocmd FileType markdown setlocal ts=2 sts=2 sw=2 expandtab
+	autocmd FileType markdown hi clear ExtraWhitespace
 augroup END
 
 " http://stackoverflow.com/questions/26962999/wrong-indentation-when-editing-yaml-in-vim
