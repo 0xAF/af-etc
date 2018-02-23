@@ -12,12 +12,13 @@
 
 sess="yakuake"
 
-tmux new-session -d -s $sess 'su;exit'
+tmux new-session -d -s $sess 'HISTFILE= su;exit'
 tmux set -t $sess status off
-tmux set -t $sess mouse on
+#tmux set -t $sess mouse on
 
 sleep 1
-tmux send-keys -t $sess "multitail -D /var/log/messages;exit" Enter
+#tmux send-keys -t $sess "multitail -D /var/log/messages;exit" Enter
+tmux send-keys -t $sess "HISTFILE= TERM=xterm-256color lnav /var/log/messages;exit" Enter
 sleep 1
 tmux send-keys -t $sess Enter
 tmux split-window -t $sess:1 -d -p 50 htop
