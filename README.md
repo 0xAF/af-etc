@@ -9,7 +9,7 @@ You should probably have a look at the scripts and config files and pickup only 
 
 *Use at your own risk!! this will overwrite some of your configurations.*
 
-    wget https://raw.github.com/0xAF/af-etc/master/init.sh && chmod +x init.sh
+    wget --no-check-certificate https://raw.github.com/0xAF/af-etc/master/init.sh && chmod +x init.sh
 
 ### acknowledgement
 
