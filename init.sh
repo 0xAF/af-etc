@@ -10,7 +10,7 @@ if [ -f /etc/debian_version ]; then
 	echo " + Running on Debian."
 	packages="aptitude git sudo curl vim make tmux"
 	echo "Give me root password..."
-	su -c "apt-get update && apt-get upgrade && apt-get install -y $packages && usermod -a -G sudo $USER && echo \"$USER ALL=(ALL) NOPASSWD: ALL\" >> /etc/sudoers.d/010_$USER-nopasswd && echo 'Done with root...'"
+	su -c "echo 'Europe/Sofia' > /etc/timezone && dpkg-reconfigure -f noninteractive tzdata && sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && sed -i -e 's/# bg_BG.UTF-8 UTF-8/bg_BG.UTF-8 UTF-8/' /etc/locale.gen && echo 'LANG=\"en_US.UTF-8\"' >/etc/default/locale && dpkg-reconfigure --frontend=noninteractive locales && update-locale LANG=nb_NO.UTF-8 && apt-get update && apt-get upgrade && apt-get install -y $packages && usermod -a -G sudo $USER && echo \"$USER ALL=(ALL) NOPASSWD: ALL\" >> /etc/sudoers.d/010_$USER-nopasswd && echo 'Done with root...'"
 fi
 
 echo "Installing af-etc..."
