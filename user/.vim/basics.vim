@@ -36,9 +36,12 @@ set nowritebackup
 
 set ttyfast " Indicates a fast terminal connection.
 
+
 set list " show some invisible chars
 " set listchars=nbsp:•,tab:▸\ ,eol:¬,trail:·,extends:↷,precedes:↶
-set listchars=nbsp:•,tab:▸\ ,trail:·,extends:↷,precedes:↶
+"set listchars=nbsp:•,tab:▸\ ,trail:·,extends:↷,precedes:↶
+set listchars=nbsp:•,tab:\ \ ,trail:·,extends:↷,precedes:↶
+
 
 " set line wrapping at word
 set lbr

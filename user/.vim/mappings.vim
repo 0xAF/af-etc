@@ -112,3 +112,15 @@ vmap <Leader>{} c{<ESC>pgv=
 " \l in visual - convert *selected* to <%=l '*selected*'%>, for use with mojo's ep
 vmap <leader>l :s/\%V\(.*\)\%V/<%=l '\1'%>/<CR>:let @/ = ""<CR>``
 
+
+
+" for some reason page up/down are not working as expected... remap them
+nmap <PageUp> <C-u>
+nmap <PageDown> <C-d>
+"imap <PageUp> <C-u>
+"imap <PageDown> <C-d>
+vmap <PageUp> <C-u>
+vmap <PageDown> <C-d>
+
+
+

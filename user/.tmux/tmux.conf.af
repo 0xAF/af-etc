@@ -70,8 +70,11 @@ bind-key -T copy-mode-vi S-NPage send-keys -X halfpage-down
 bind-key -T copy-mode-vi C-PPage send-keys -X halfpage-up
 bind-key -T copy-mode-vi C-NPage send-keys -X halfpage-down
 
-bind-key -n S-PPage copy-mode -eu
-bind-key -n C-PPage copy-mode -eu
+bind-key -n S-PPage copy-mode -e \; send-keys -X halfpage-up
+bind-key -n C-PPage copy-mode -e \; send-keys -X halfpage-up
+#bind-key -n S-PPage copy-mode -eu
+#bind-key -n C-PPage copy-mode -eu
+# use refresh command as NOP
 bind-key -n S-NPage refresh
 bind-key -n C-NPage refresh
 bind-key -n WheelUpPane copy-mode -e
