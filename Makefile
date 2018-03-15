@@ -35,7 +35,7 @@ tmux:
 
 su-nopass:
 	@echo "[+] 'su' without password if you are in 'sudo' group"
-	@cp /etc/pam.d/su /etc/pam.d/su.af-etc
-	@echo 'auth sufficient pam_wheel.so trust group=sudo' > /etc/pam.d/su
-	@cat /etc/pam.d/su.af-etc >> /etc/pam.d/su
+	@cp /etc/pam.d/su /etc/pam.d/su.af-etc || true
+	@echo 'auth sufficient pam_wheel.so trust group=sudo' > /etc/pam.d/su || true
+	@cat /etc/pam.d/su.af-etc >> /etc/pam.d/su || true
 
