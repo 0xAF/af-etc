@@ -20,6 +20,9 @@ bind 'H' split-window -l 15 -b -v "exec htop"
 unbind C-q
 set -g prefix C-q
 
+# create new window (normally with prefix-c, now with prefix-ctrl-c too)
+bind-key C-c new-window
+
 # send the prefix to client inside window (ala nested sessions)
 bind-key C-q send-prefix
 #bind-key q send-prefix

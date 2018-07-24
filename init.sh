@@ -25,7 +25,7 @@ if [ -f /etc/alpine-release ]; then
 		echo "run me with root."
 		exit 1
 	fi
-	packages="bash vim git make findutils wget coreutils"
+	packages="bash vim git make findutils wget coreutils grep"
 	apk add -t af-etc $packages
 fi
 

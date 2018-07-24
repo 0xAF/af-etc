@@ -26,9 +26,6 @@ autocmd FileType text setlocal textwidth=78
 au FileType html,xhtml,tt2html,html.epl setlocal tabstop=2 shiftwidth=2 softtabstop=2 sidescroll=2
 au FileType perl,js,jquery setlocal tabstop=4 shiftwidth=4 softtabstop=4 sidescroll=4 noet
 
-" epl (Embedded Perl - Mojolicious)
-au FileType epl imap <C-Space> <%=  =%><ESC>hhhha
-
 
 
 

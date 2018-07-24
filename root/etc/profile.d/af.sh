@@ -52,7 +52,7 @@ exists perl			&& alias rot13='perl -pe "y/A-Za-z/N-ZA-Mn-za-m/;"'
 exists vim 			&& alias vi=$(type -P vim)
 #exists nvim 		&& alias vi=$(type -P nvim)
 exists openssl		&& alias telnetssl='openssl s_client -crlf -connect'
-exists perl			&& alias hexdecode='perl -pe '\''s/([0-9a-f]{2})/chr hex $1/gie'\'''
+exists perl			&& alias hexdecode='perl -pe '\''s/([0-9a-f]{2})/chr hex $1/gie'\''' #'
 exists od			&& alias hexencode='od -A n -t x1 -v | sed -e "s/ //g"'
 
 unalias ls 2>/dev/null
@@ -64,9 +64,6 @@ alias path='echo -e ${PATH//:/\\n}'
 
 
 # check the rest of this file, but it's not very interesting after this line
-
-
-
 
 
 function set_ps1() { #{{{
@@ -329,7 +326,6 @@ CD_BOOKMARKS_PATH="$HOME/.cd_bookmarks"
 if  [ ! -e "$CD_BOOKMARKS_PATH" ] ; then
 	mkdir "$CD_BOOKMARKS_PATH"
 fi
-
 function cdb() { # CD Bookmarks (with editable scripts) {{{
 	local USAGE="Usage: cdb [-c|-g|-d|-l] [bookmark]" ;
 
@@ -390,14 +386,50 @@ function cdb() { # CD Bookmarks (with editable scripts) {{{
 complete -o filenames -W "$(find "$CD_BOOKMARKS_PATH" -type f -printf "%f\n")" cdb
 # }}} 
 
+transfer() { #{{{ transfer.sh - easy file transfer
+	if [ $# -eq 0 ]; then
+		echo "No arguments specified."
+		echo
+		echo "Usage:"
+		echo "  transfer /tmp/test.md"
+		echo "  cat /tmp/test.md | transfer test.md"
+		return 1
+	fi
+	tmpfile=$( mktemp -t transferXXX )
+	if tty -s; then
+		basefile=$(basename "$1" | sed -e 's/[^a-zA-Z0-9._-]/-/g')
+		curl --progress-bar --upload-file "$1" "https://transfer.sh/$basefile" >> $tmpfile
+	else
+		curl --progress-bar --upload-file "-" "https://transfer.sh/$1" >> $tmpfile
+	fi
+	cat $tmpfile
+	echo
+	rm -f $tmpfile
+} #}}}
+
+
 if [[ -z ${SERVER} ]]; then
 	export WEATHER_PROVIDER='http://wttr.in/Варна?lang=bg'
+	export WEATHER_CITY_ENG="varna"
 	test -f ~/.wttr.in || curl -sk $WEATHER_PROVIDER -o ~/.wttr.in
 	find ~ -maxdepth 1 -name .wttr.in -cmin +5 -exec curl -sk $WEATHER_PROVIDER -o ~/.wttr.in \;
 	echo
 	head -7 ~/.wttr.in | tail -5
 	echo
-	W(){ test -f ~/.wttr.in || curl -sk $WEATHER_PROVIDER -o ~/.wttr.in; find ~ -maxdepth 1 -name .wttr.in -cmin +5 -exec curl -sk $WEATHER_PROVIDER -o ~/.wttr.in \;; head -37 ~/.wttr.in; }
+	W() {
+		test -f ~/.wttr.in || curl -sk $WEATHER_PROVIDER -o ~/.wttr.in
+		if [[ -z $1 ]]; then
+			find ~ -maxdepth 1 -name .wttr.in -cmin +5 -exec curl -sk $WEATHER_PROVIDER -o ~/.wttr.in \;
+		else
+			curl -sk $WEATHER_PROVIDER -o ~/.wttr.in
+		fi
+		head -37 ~/.wttr.in
+	}
+	WW() {
+		exec 3<>/dev/tcp/graph.no/79
+		echo $WEATHER_CITY_ENG >&3
+		cat <&3
+	}
 fi
 
 unset -f exists # remove helper function

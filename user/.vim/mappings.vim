@@ -5,10 +5,10 @@
 let mapleader = " "
 
 " toggle numbers (e.g. for copy and paste to another window)
-nmap <leader>tn :set relativenumber!<CR>
+nmap <leader>n :set relativenumber!<CR>
 
 " show invisible chars (*t*oggle *l*ist)
-nmap <leader>tl :set list!<CR>
+nmap <leader>l :set list!<CR>
 
 " Don't use Ex mode, use Q for formatting
 map Q gq
@@ -109,9 +109,6 @@ vmap <S-Up> <Up>
 vmap <Leader>{} c{<ESC>pgv=
 
 
-" \l in visual - convert *selected* to <%=l '*selected*'%>, for use with mojo's ep
-vmap <leader>l :s/\%V\(.*\)\%V/<%=l '\1'%>/<CR>:let @/ = ""<CR>``
-
 
 
 " for some reason page up/down are not working as expected... remap them
@@ -121,6 +118,12 @@ nmap <PageDown> <C-d>
 "imap <PageDown> <C-d>
 vmap <PageUp> <C-u>
 vmap <PageDown> <C-d>
+
+" epl (Embedded Perl - Mojolicious)
+"au FileType epl imap <C-Space> <%=  =%><ESC>hhhha
+
+" \l in visual - convert *selected* to <%=l '*selected*'%>, for use with mojo's ep
+vmap <leader>l :s/\%V\(.*\)\%V/<%=l('\1')%>/<CR>:let @/ = ""<CR>``
 
 
 

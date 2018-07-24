@@ -1,3 +1,5 @@
 
+set nolist
 "colorscheme af
+
 

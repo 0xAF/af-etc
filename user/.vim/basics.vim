@@ -138,7 +138,12 @@ set ch=2
 
 setlocal spelllang=en_us
 
+" keep 3 lines visible while scrolling
+set scrolloff=3
 
 " do not clear the screen on exit (in TERM=xterm)
 set t_ti= t_te=
+
+" remove : from keyword list, so pressing 'cw' wont remove :
+set iskeyword-=:
 
