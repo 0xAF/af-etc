@@ -34,7 +34,7 @@ if exists keychain; then
 	. ~/.keychain/${HOSTNAME}-sh-gpg
 fi
 
-exists fortune && fortune -a
+exists fortune && fortune -ac
 
 # aliases
 #alias ssh='ssh -e\|'
@@ -61,5 +61,4 @@ if [[ -f ~/.bashrc.local ]]; then
 fi
 
 unset -f exists
-
 

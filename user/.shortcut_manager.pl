@@ -37,12 +37,22 @@ my %config = (
 	},
 
 	# for firefox
-	qr/firefox/i => {
+	qr/firefox|chromium/i => {
 		# mouse btn 9
-		'mb9' => qq{ xte "keydown Control_L" "key Page_Up"   "keyup Control_L" },
+		#'mb9' => qq{ xte "keydown Control_L" "key Page_Up"   "keyup Control_L" },
+		'mb9' => qq{ xte "keydown Alt_L" "key Left" "keyup Alt_L" },
 
 		# mouse btn 8
-		'mb8' => qq{ xte "keydown Control_L" "key Page_Down" "keyup Control_L" },
+		#'mb8' => qq{ xte "keydown Control_L" "key Page_Down" "keyup Control_L" },
+		'mb8' => qq{ xte "keydown Alt_L" "key Right" "keyup Alt_L" },
+
+		# mouse btn 6 (scroll left)
+		#'mb6' => qq{ xte "keydown Alt_L" "key Left" "keyup Alt_L" },
+		'mb6' => qq{ xte "keydown Control_L" "key Page_Up"   "keyup Control_L" },
+
+		# mouse btn 7 (scroll right)
+		#'mb7' => qq{ xte "keydown Alt_L" "key Right" "keyup Alt_L" },
+		'mb7' => qq{ xte "keydown Control_L" "key Page_Down" "keyup Control_L" },
 	},
 
 	qr/Visual Studio Code/i => {
@@ -51,6 +61,12 @@ my %config = (
 
 		# mouse btn 8
 		'mb8' => qq{ xte "keydown Control_L" "key Page_Down" "keyup Control_L" },
+
+		# mouse btn 6
+		'mb6' => qq{ xte "keydown Control_L" "key Page_Up"   "keyup Control_L" },
+
+		# mouse btn 7
+		'mb7' => qq{ xte "keydown Control_L" "key Page_Down" "keyup Control_L" },
 	},
 
 );

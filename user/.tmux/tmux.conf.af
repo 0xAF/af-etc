@@ -59,6 +59,12 @@ bind -n C-Right select-pane -R
 bind -n C-Up select-pane -U
 bind -n C-Down select-pane -D
 
+# alt-arrow keys resize panes
+bind -n M-Down resize-pane -D
+bind -n M-Up resize-pane -U
+bind -n M-Left resize-pane -L
+bind -n M-Right resize-pane -R
+
 #bind -n C-S-n new-window
 
 bind-key C-[ copy-mode
@@ -98,7 +104,7 @@ unbind %
 
 
 # No delay for escape key press
-set -sg escape-time 0
+set -sg escape-time 100
 
 set -g status-keys vi
 setw -g mode-keys vi
@@ -121,6 +127,13 @@ set -g display-panes-time 2000
 
 # start window indexing at one instead of zero
 set -g base-index 1
+# Make pane numbering consistent with windows
+setw -g pane-base-index 1
+
+# Renumber windows when a window is closed
+# This guarantees it will be easier for you to switch
+# between windows as you keep opening and closing them
+set -g renumber-windows on
 
 # Automatically set window title
 set-window-option -g automatic-rename on
@@ -129,7 +142,7 @@ set-window-option -g automatic-rename on
 set -g set-titles on
 
 # wm window title string (uses statusbar variables)
-set -g set-titles-string "tmux.#I - #W"
+set -g set-titles-string "tmux - [#I.#P:#W]"
 
 # Disallow auto window renaming, stop tmux from renaming your windows
 set -g allow-rename off
@@ -175,9 +188,10 @@ set -g status-right '\
 #[default] ┊ \
 #[default]#{battery_status_fg} #{battery_icon} #{battery_percentage} #{battery_graph} \
 #[default] ┊ \
-#[default]#[fg=colour110]%a %d %b %H:%M#[default] \
+#[default]#[fg=colour110]%H:%M#[default] \
 #{prefix_highlight}\
 '
+#   #[default]#[fg=colour110]%a %d %b %H:%M#[default] \
 
 
 
@@ -207,7 +221,11 @@ set -g @tpm_plugins '            \
 	0xAF/tmux-public-ip \
 	tmux-plugins/tmux-prefix-highlight \
 	tmux-plugins/tmux-battery \
+	tmux-plugins/tmux-resurrect \
+	tmux-plugins/tmux-continuum \
 '
+set -g @continuum-restore 'on'
+set -g @resurrect-capture-pane-contents 'on'
 
 set -g @colors-solarized '256'
 

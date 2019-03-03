@@ -407,6 +407,10 @@ transfer() { #{{{ transfer.sh - easy file transfer
 	rm -f $tmpfile
 } #}}}
 
+how_in() {
+	where="$1"; shift
+	IFS=+ curl "https://cht.sh/$where/ $*"
+}
 
 if [[ -z ${SERVER} ]]; then
 	export WEATHER_PROVIDER='http://wttr.in/Варна?lang=bg'
