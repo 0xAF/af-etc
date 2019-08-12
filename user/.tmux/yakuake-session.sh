@@ -19,7 +19,8 @@ tmux set -t $sess status off
 #tmux set -t $sess mouse on
 
 sleep 1
-tmux send-keys -t $sess "HISTFILE= TERM=xterm-256color grc -c conf.log tail -F -n 150 /var/log/messages;exit" Enter
+tmux send-keys -t $sess "HISTFILE= grc --colour=on -c conf.log tail -F -n 150 /var/log/messages; exit" Enter
+#tmux send-keys -t $sess "HISTFILE= TERM=xterm-256color journalctl -f;exit" Enter
 #tmux send-keys -t $sess "HISTFILE= TERM=xterm-256color multitail -D /var/log/messages;exit" Enter
 #tmux send-keys -t $sess "HISTFILE= TERM=xterm-256color lnav /var/log/messages;exit" Enter
 sleep 1

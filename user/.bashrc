@@ -7,8 +7,8 @@ fi
 
 function exists() { type -P $1 >/dev/null 2>&1; }
 
-if [[ -f ~/.dircolors/LS_COLORS ]]; then
-	eval `dircolors -b ~/.dircolors/LS_COLORS`
+if [[ -f ~/.config/dircolors/LS_COLORS ]]; then
+	eval `dircolors -b ~/.config/dircolors/LS_COLORS`
 else
 	eval `dircolors -b`
 fi
@@ -28,11 +28,18 @@ case $TERM in
 esac
 
 if exists keychain; then
-	# ~/.ssh/old_id_dsa ~/.ssh/id_dsa.octagon
-	keychain --inherit any -Q ~/.ssh/id_rsa ~/.ssh/github_rsa ~/.ssh/bitbucket_rsa ~/.ssh/git.0xaf.org_rsa A8B855BD DA3BB96F
-	. ~/.keychain/${HOSTNAME}-sh
-	. ~/.keychain/${HOSTNAME}-sh-gpg
+	eval $( keychain --eval --agents ssh,gpg --inherit any -Q ~/.ssh/id_rsa ~/.ssh/github_rsa ~/.ssh/bitbucket_rsa ~/.ssh/git.0xaf.org_rsa A8B855BD DA3BB96F)
 fi
+
+#unset SSH_AGENT_PID
+#if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
+#	export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+#fi
+#
+#export GPG_TTY=$(tty)
+#gpg-connect-agent updatestartuptty /bye >/dev/null
+
+#ssh-add ~/.ssh/id_rsa ~/.ssh/github_rsa ~/.ssh/bitbucket_rsa ~/.ssh/git.0xaf.org_rsa
 
 exists fortune && fortune -ac
 
@@ -44,6 +51,9 @@ alias grep="$(type -P grep) --color=auto"
 
 #make-debug print-SOURCE_FILES
 alias make-debug='make --eval="print-%: ; @echo $*=$($*)"'
+
+alias config='/usr/bin/git --git-dir=$HOME/.config/dotfiles.git/ --work-tree=$HOME'
+alias config_private='/usr/bin/git --git-dir=$HOME/.config/dotfiles_private.git/ --work-tree=$HOME'
 
 export PATH=$PATH:~/.local/bin:~/.local/sbin:/sbin:/usr/sbin
 
@@ -61,4 +71,5 @@ if [[ -f ~/.bashrc.local ]]; then
 fi
 
 unset -f exists
+
 

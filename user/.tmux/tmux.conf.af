@@ -5,13 +5,13 @@ bind r source-file ~/.tmux.conf \; display '~/.tmux.conf sourced'
 
 
 # open productivity sections
-bind 'P' split-window -l 35 -h "while true; do clear; date; echo; sleep 600; done;"
+bind 'T' new-window -c /home/af/devel/tg/main/app -n mojo "./cli dev;bash -l" \; split-window -c /home/af/devel/tg/main/app/vue-components -l 47 -h "make App DEV=1;bash -l"
 
 # open a man page in new window
 bind 'M' command-prompt "split-window -h 'exec man %%'"
 
-# var log messages
-bind 'L' new-window "exec log"
+# sshch
+bind 's' new-window "~/.local/bin/sshch"
 
 # quick view of processes
 bind 'H' split-window -l 15 -b -v "exec htop"
@@ -73,6 +73,11 @@ bind-key -T copy-mode-vi Escape send-keys -X cancel
 bind-key -T copy-mode-vi Home send-keys -X start-of-line
 bind-key -T copy-mode-vi End send-keys -X end-of-line
 
+bind-key -n S-Up copy-mode -e \; send-keys -X halfpage-up
+bind-key -T copy-mode-vi S-Up send-keys -X halfpage-up
+bind-key -T copy-mode-vi S-Down send-keys -X halfpage-down
+bind-key -n S-Down refresh
+
 bind-key -T copy-mode-vi S-PPage send-keys -X halfpage-up
 bind-key -T copy-mode-vi S-NPage send-keys -X halfpage-down
 
@@ -93,6 +98,9 @@ bind-key -T copy-mode-vi WheelDownPane select-pane \; send-keys -X -N 5 scroll-d
 
 bind-key -T copy-mode-vi 'v' send -X begin-selection
 bind-key -T copy-mode-vi 'y' send -X copy-selection
+# ctrl-q q to copy the selected buffer to clipboard (redirect the output to /dev/null, so STDOUT is closed, because xclip will not close it by itself and tmux will keep waiting for xclip to close it)
+bind-key q run-shell "tmux show-buffer | xclip -sel clip -i > /dev/null" \; display-message "Copied tmux buffer to system clipboard"
+
 bind-key -T copy-mode-vi 'Space' send -X halfpage-down
 bind-key -T copy-mode-vi 'Bspace' send -X halfpage-up
 
@@ -103,12 +111,25 @@ unbind %
 
 
 
+set-window-option -g mouse off
+# Enable mouse
+set-window-option -g mouse on
+#bind -n WheelUpPane if-shell -F -t = "#{mouse_any_flag}" "send-keys -M" "if -Ft= '#{pane_in_mode}' 'send-keys -M' 'select-pane -t=; copy-mode -e; send-keys -M'"
+#bind -n WheelDownPane select-pane -t= \; send-keys -M
+
+
+# this should enable native scroll in xterm
+# set -g terminal-overrides 'xterm*:smcup@:rmcup@'
+#set -g terminal-overrides 'screen*:smcup@:rmcup@'
+#set -ga terminal-overrides ',xterm-256color:Tc'
+
+
 # No delay for escape key press
-set -sg escape-time 100
+#set -sg escape-time 100
+set -gs escape-time 0
 
 set -g status-keys vi
 setw -g mode-keys vi
-#setw -g mode-mouse on
 setw -g monitor-activity on
 
 # this enables pass through of ctrl-left/right to zsh (from FAQ)
@@ -160,15 +181,15 @@ set -g status-right-length 150
 
 set -g status-fg white
 set -g status-bg colour234
-set -g window-status-current-bg white
-set -g window-status-current-fg black
-set -g window-status-current-attr bold
-set -g window-status-activity-attr bold
-set -g pane-border-fg colour245
-set -g pane-active-border-fg colour39
-set -g message-fg colour16
-set -g message-bg colour221
-set -g message-attr bold
+#set -g window-status-current-bg white
+#set -g window-status-current-fg black
+#set -g window-status-current-attr bold
+#set -g window-status-activity-attr bold
+#set -g pane-border-fg colour245
+#set -g pane-active-border-fg colour39
+#set -g message-fg colour16
+#set -g message-bg colour221
+#set -g message-attr bold
 
 set -g status-left '\
 #[fg=colour235,bg=colour252,bold] ❐ #S \
@@ -179,6 +200,9 @@ set -g status-left '\
 
 set -g window-status-format "#[fg=white,bg=colour233] #I #[bg=colour238] #W "
 set -g window-status-current-format "#[fg=colour222,bg=colour27,noreverse,bold] #I #[fg=colour228,bg=colour33] #W "
+
+# #[default] ┊ \
+# D:#[fg=colour119,bold]#{download_speed}#[default] U:#[fg=colour135]#{upload_speed}\
 
 set -g status-right '\
 #[default] ┊ \
@@ -195,6 +219,7 @@ set -g status-right '\
 
 
 
+set -g @net_speed_interfaces "eth0 wlan0"
 
 
 
@@ -212,6 +237,9 @@ set -g status-right '\
 
 #	thewtex/tmux-mem-cpu-load    \
 #	tmux-plugins/tmux-resurrect  \
+#	tmux-plugins/tmux-continuum \
+#	nhdaly/tmux-better-mouse-mode \
+#	tmux-plugins/tmux-net-speed \
 
 set -g @tpm_plugins '            \
 	tmux-plugins/tpm             \
@@ -221,11 +249,12 @@ set -g @tpm_plugins '            \
 	0xAF/tmux-public-ip \
 	tmux-plugins/tmux-prefix-highlight \
 	tmux-plugins/tmux-battery \
-	tmux-plugins/tmux-resurrect \
-	tmux-plugins/tmux-continuum \
+	nhdaly/tmux-better-mouse-mode \
 '
-set -g @continuum-restore 'on'
-set -g @resurrect-capture-pane-contents 'on'
+#set -g @emulate-scroll-for-no-mouse-alternate-buffer "on"
+
+#set -g @continuum-restore 'on'
+#set -g @resurrect-capture-pane-contents 'on'
 
 set -g @colors-solarized '256'
 

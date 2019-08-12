@@ -40,8 +40,7 @@ shopt -s autocd
 # use "type -P" here to get the full path to the binary
 exists aptitude 	&& alias a=$(type -P aptitude)
 exists pacman		&& alias p=$(type -P pacman)
-exists pacman-color	&& alias p=$(type -P pacman-color)
-exists yaourt		&& alias y=$(type -P yaourt)
+exists yay		&& alias y=$(type -P yay)
 exists mtr			&& alias mtr="$(type -P mtr) --curses"
 exists mplayer		&& alias mplayer='LANG=bg_BG.UTF-8 LC_ALL=bg_BG.UTF-8 LANGUAGE=bg_BG.UTF-8 mplayer -subcp cp1251'
 exists equo			&& alias eq=$(type -P equo)
@@ -54,6 +53,7 @@ exists vim 			&& alias vi=$(type -P vim)
 exists openssl		&& alias telnetssl='openssl s_client -crlf -connect'
 exists perl			&& alias hexdecode='perl -pe '\''s/([0-9a-f]{2})/chr hex $1/gie'\''' #'
 exists od			&& alias hexencode='od -A n -t x1 -v | sed -e "s/ //g"'
+exists pacman		&& alias packages="pacman -Qq | fzf --preview 'pacman -Qil {}' --layout=reverse --bind 'enter:execute(pacman -Qil {} | less)'"
 
 unalias ls 2>/dev/null
 alias ls="$(type -P ls) --color=auto --group-directories-first -p"
@@ -256,7 +256,7 @@ case "${MAN_COLOR_SET}" in
 esac
 #}}}
 
-export LESS="$LESS -i -r -M -X"
+export LESS="$LESS -i -R -M -X"
 export LESSCOLOR=yes
 exists lesspipe.sh	&& export LESSOPEN="|lesspipe.sh %s"
 exists lesspipe		&& export LESSOPEN="|lesspipe %s"
@@ -425,7 +425,7 @@ if [[ -z ${SERVER} ]]; then
 		if [[ -z $1 ]]; then
 			find ~ -maxdepth 1 -name .wttr.in -cmin +5 -exec curl -sk $WEATHER_PROVIDER -o ~/.wttr.in \;
 		else
-			curl -sk $WEATHER_PROVIDER -o ~/.wttr.in
+			curl -m3 -sk $WEATHER_PROVIDER -o ~/.wttr.in
 		fi
 		head -37 ~/.wttr.in
 	}

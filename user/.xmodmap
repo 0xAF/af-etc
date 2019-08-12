@@ -1,4 +1,5 @@
-
+! to reset the modifier keys use:
+! setxkbmap -option
 
 remove Lock = Caps_Lock
 keysym Caps_Lock = Escape

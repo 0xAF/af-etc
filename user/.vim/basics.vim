@@ -123,6 +123,8 @@ set hid
 " mousefocus	the window with the mouse pointer becomes the current one
 set nomousef
 
+set mouse=a
+
 
 " Yep, and finally
 syntax on

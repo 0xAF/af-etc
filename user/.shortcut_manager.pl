@@ -2,7 +2,9 @@
 
 use strict;
 
-my $DEBUG=1; # enable syslog debugging
+my $DEBUG=2; # enable syslog debugging
+
+# run this script without parameters to print the configuration on the screen.
 
 # configuration format is:
 # 'appname1' => ( # use `xdotool getactivewindow getwindowname` to get the name of the active window (you can use substring here)
@@ -33,7 +35,8 @@ my %config = (
 
 	qr/kontact/i => {
 		'mb9' => qq{ xte "str +" }, # next unread msg
-		'mb8' => qq{ xte "keydown Alt_L" "str +" "keyup Alt_L" }, # next unread folder
+		#'mb8' => qq{ xte "keydown Alt_L" "str +" "keyup Alt_L" }, # next unread folder
+		'mb8' => qq{ xte "keydown Alt_L" "key KP_Add" "keyup Alt_L" }, # next unread folder
 	},
 
 	# for firefox
@@ -55,7 +58,7 @@ my %config = (
 		'mb7' => qq{ xte "keydown Control_L" "key Page_Down" "keyup Control_L" },
 	},
 
-	qr/Visual Studio Code/i => {
+	qr/Code - OSS/i => {
 		# mouse btn 9
 		'mb9' => qq{ xte "keydown Control_L" "key Page_Up"   "keyup Control_L" },
 
@@ -121,3 +124,4 @@ unless ($found) {
 	system("logger 'not found action for [$ARGV[0]] on active window [$appname]'") if ($DEBUG);
 	exit 1;
 }
+
