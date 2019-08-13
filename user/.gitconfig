@@ -1,0 +1,73 @@
+[user]
+	name = Stanislav Lechev [AngelFire]
+	email = af@0xAF.org
+
+[core]
+	pager = diff-so-fancy | less --tabs=4 -RFX
+	editor = /usr/bin/vim
+	excludesfile = /home/af/.gitignore_global
+
+[log]
+	decorate = true
+
+[commit]
+	template = /home/af/.gitmessage.txt
+
+# colors {{{
+[color]
+	diff = auto
+	branch = auto
+	interactive = auto
+	status = auto
+	ui = true
+
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green bold
+	newHighlight = green bold 22
+
+[color "diff"]
+	meta = yellow
+	frag = magenta bold
+	commit = yellow bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse
+
+[color "branch"]
+	current = red reverse
+	local = blue
+	remote = green
+
+[color "status"]
+	added = yellow
+	changed = green
+	untracked = cyan
+
+[diff-so-fancy]
+	first-run = false
+# }}}
+
+# push/pull/diff/options {{{
+[push]
+	#default = simple
+	default = current
+[pull]
+	default = current
+[diff]
+	mnemonicprefix = true
+[branch]
+	autosetuprebase = always
+[apply]
+	whitespace = nowarn
+# }}}
+
+[alias]
+	ls = log --pretty=format:"%C(green)%h\\ %C(yellow)[%ad]%Cred%d\\ %Creset%s%Cblue\\ [%an]" --decorate --date=relative
+	ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [a:%an,c:%cn]" --decorate --numstat
+	lc  = "!f() { git ll "$1"^.."$1"; }; f"
+	lnc = log --pretty=format:"%h\\ %s\\ [%cn]"
+	fl = log -u
+	filelog = log -u
+
