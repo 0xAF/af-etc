@@ -327,7 +327,7 @@ if  [ ! -e "$CD_BOOKMARKS_PATH" ] ; then
 	mkdir "$CD_BOOKMARKS_PATH"
 fi
 function cdb() { # CD Bookmarks (with editable scripts) {{{
-	local USAGE="Usage: cdb [-c|-g|-d|-l] [bookmark]" ;
+	local USAGE="Usage: cdb [-c|-g|-d|-l] [bookmark]  (options: Create, Goto, Delete, List)" ;
 
 	local argument=$1
 	shift
@@ -335,6 +335,11 @@ function cdb() { # CD Bookmarks (with editable scripts) {{{
 	case $argument in
 		# create bookmark
 		-c)
+			if [ -z $1 ]; then
+				echo "$USAGE"
+				echo "give me a bookmark name..."
+				return
+			fi
 			if [ ! -f "$CD_BOOKMARKS_PATH"/"$1" ] ; then
 				echo '#!/bin/bash' > "$CD_BOOKMARKS_PATH"/"$1" ;
 				echo "# You can modify this script to your liking, it will be called by 'cdb $1'" >> "$CD_BOOKMARKS_PATH"/"$1" ;
