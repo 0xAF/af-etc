@@ -23,6 +23,9 @@ set -g prefix C-q
 # create new window (normally with prefix-c, now with prefix-ctrl-c too)
 bind-key C-c new-window
 
+# new window in CWD with prefix-C
+bind-key C new-window -c '#{pane_current_path}'
+
 # send the prefix to client inside window (ala nested sessions)
 bind-key C-q send-prefix
 #bind-key q send-prefix
