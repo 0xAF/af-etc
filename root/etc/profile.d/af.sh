@@ -420,17 +420,18 @@ how_in() {
 if [[ -z ${SERVER} ]]; then
 	export WEATHER_PROVIDER='http://wttr.in/Варна?lang=bg'
 	export WEATHER_CITY_ENG="varna"
-	test -f ~/.wttr.in || curl -sk $WEATHER_PROVIDER -o ~/.wttr.in
-	find ~ -maxdepth 1 -name .wttr.in -cmin +5 -exec curl -sk $WEATHER_PROVIDER -o ~/.wttr.in \;
+	export WEATHER_CURL_COMMAND="curl -m 3 -sk $WEATHER_PROVIDER -o ~/.wttr.in"
+	test -f ~/.wttr.in || $WEATHER_CURL_COMMAND
+	find ~ -maxdepth 1 -name .wttr.in -cmin +5 -exec $WEATHER_CURL_COMMAND \;
 	echo
 	head -7 ~/.wttr.in | tail -5
 	echo
 	W() {
-		test -f ~/.wttr.in || curl -sk $WEATHER_PROVIDER -o ~/.wttr.in
+		test -f ~/.wttr.in || $WEATHER_CURL_COMMAND
 		if [[ -z $1 ]]; then
-			find ~ -maxdepth 1 -name .wttr.in -cmin +5 -exec curl -sk $WEATHER_PROVIDER -o ~/.wttr.in \;
+			find ~ -maxdepth 1 -name .wttr.in -cmin +5 -exec $WEATHER_CURL_COMMAND \;
 		else
-			curl -m3 -sk $WEATHER_PROVIDER -o ~/.wttr.in
+			$WEATHER_CURL_COMMAND
 		fi
 		head -37 ~/.wttr.in
 	}

@@ -84,6 +84,23 @@
 "~/.shortcut_manager.pl mb9"
   b:9
 
+# super + up = pageup
+"xdotool key --clearmodifiers Prior"
+  mod4 + Release + Up
+
+# super + down = pagedown
+"xdotool key --clearmodifiers Next"
+  mod4 + Release + Down
+
+# super + left = home
+"xdotool key --clearmodifiers Home"
+  mod4 + Release + Left
+
+# super + right = end
+"xdotool key --clearmodifiers End"
+  mod4 + Release + Right
+
+
 ##################################
 # End of xbindkeys configuration #
 ##################################
